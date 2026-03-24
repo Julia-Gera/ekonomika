@@ -1,65 +1,74 @@
-import Image from "next/image";
+import Image from 'next/image'
+import ServiceCard from '@/components/ui/ServiceCard'
+import ArticleCard from '@/components/ui/ArticleCard'
+import ContactFormSection from '@/components/sections/ContactFormSection'
+import SearchBar from '@/components/ui/SearchBar'
+import { services, articles } from '@/lib/placeholder-data'
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <>
+      {/* ═══ HERO + СЕТКА УСЛУГ (единая секция с декоративным фоном) ═══ */}
+      <section className="bg-[#E7E9EC] -mt-[64px]">
+        <div className="max-w-[1440px] mx-auto px-[140px] relative isolate overflow-hidden">
+          {/* Декоративная иллюстрация: x=48, y=-3 от верха страницы */}
+          <div className="absolute left-[48px] top-[-3px] pointer-events-none select-none z-[-1]">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/images/hero-illustration.svg"
+              alt=""
+              width={593}
+              height={677}
+              priority
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+
+          {/* H1: y=84 от верха страницы = pt-[84px] */}
+          <h1 className="relative pt-[84px] text-[40px] font-normal text-[#0C2140] leading-[48px] tracking-[-2px] max-w-[619px] mx-auto text-center">
+            Наш подход — научная экономика труда без отвлечения от бизнеса
+          </h1>
+
+          {/* SearchBar */}
+          <div className="relative mt-[12px] pb-[13px] flex justify-center">
+            <SearchBar />
+          </div>
+
+          {/* Сетка услуг */}
+          <div className="grid grid-cols-3 gap-[10px]">
+            {services.map(s => (
+              <ServiceCard
+                key={s.id}
+                number={s.number}
+                title={s.title}
+                href={`/uslugi/${s.slug}`}
+                icon={s.icon}
+              />
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
-  );
+      </section>
+
+      {/* ═══ ПОСЛЕДНИЕ НОВОСТИ ═══════════════════════════════════════ */}
+      <section className="bg-[#E7E9EC] pt-[76px] pb-[76px]">
+        <div className="max-w-[1440px] mx-auto px-[140px]">
+          <h2 className="text-[30px] font-normal text-[#0C2140] mb-[76px]">
+            Последние новости
+          </h2>
+          <div className="grid grid-cols-3 gap-[10px]">
+            {articles.map(a => (
+              <ArticleCard
+                key={a.id}
+                date={a.date}
+                category={a.category}
+                title={a.title}
+                href={`/stati/${a.slug}`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ФОРМА ОБРАТНОЙ СВЯЗИ ════════════════════════════════════ */}
+      <ContactFormSection />
+    </>
+  )
 }
