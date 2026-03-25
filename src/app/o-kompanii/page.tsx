@@ -35,55 +35,55 @@ function SectionLabel({ text, dark = false }: { text: string; dark?: boolean }) 
 export default function OKompaniiPage() {
   return (
     <>
-      {/* ═══ HERO ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#E7E9EC] -mt-[64px]">
-        <div className="max-w-[1440px] mx-auto px-[140px] relative isolate overflow-hidden">
+      {/* ═══ HERO — полная ширина, фото уходит под хедер как в Figma ══ */}
+      <section className="bg-[#E7E9EC] pb-[74px] relative overflow-hidden" style={{ marginTop: -57 }}>
 
-          {/* Декоративный элемент */}
-          <div className="absolute left-[48px] top-[-3px] pointer-events-none select-none z-[-1]">
-            <Image src="/images/hero-illustration.svg" alt="" width={593} height={677} />
-          </div>
+        {/* Полноширинное фото */}
+        <div className="relative" style={{ height: 739 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/ЭкономикаТруда/99999.png"
+            alt="Валентина Митрофанова"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: 'center 15%' }}
+          />
 
-          {/* Хлебные крошки */}
-          <div className="pt-[76px]">
-            <Breadcrumb items={[{ label: 'О компании' }]} />
-          </div>
+          {/* Градиент: прозрачный → #0C2140 */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: 'linear-gradient(to bottom, transparent 40%, #0C2140 100%)' }}
+          />
 
-          {/* Заголовок */}
-          <h1 className="text-[40px] font-normal text-[#0C2140] mt-[12px] tracking-[-2px]">
-            О компании
-          </h1>
-
-          {/* Фото + карточки */}
-          <div className="relative mt-[24px] mb-[74px]" style={{ height: 500 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/ЭкономикаТруда/99999.png"
-              alt="Валентина Митрофанова"
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ objectPosition: 'center 15%' }}
-            />
-
-            {/* Белая карточка — левые 62%, прилипает ко дну */}
-            <div
-              className="absolute bottom-0 left-0 bg-white flex items-end"
-              style={{ width: '62%', height: 210, padding: '32px' }}
-            >
-              <p className="text-[40px] font-normal text-[#0C2140] leading-[1.15] tracking-[-2px]">
-                «Самое ценное — доверие тех,<br />кто работает со мной»
-              </p>
+          {/* Хлебные крошки — внутри фото, ниже хедера */}
+          <div className="absolute top-[81px] left-0 right-0 z-[2]">
+            <div className="max-w-[1440px] mx-auto px-[140px]">
+              <Breadcrumb items={[{ label: 'О компании' }]} />
             </div>
+          </div>
 
-            {/* Тёмная панель — правые 38%, прилипает ко дну */}
-            <div
-              className="absolute bottom-0 right-0 flex items-end"
-              style={{ width: '38%', height: 210, backgroundColor: 'rgba(12,33,64,0.85)', padding: '32px' }}
-            >
-              <p className="text-white/75 text-[14px] font-normal leading-[1.6]">
-                Валентина Митрофанова — основательница консалтинговой компании «Митрофанова и партнёры»,
-                эксперт с 20-летним опытом в управлении персоналом, производительностью труда и консалтинге.
-                За годы работы помогла более 100 компаниям оптимизировать экономику труда и повысить эффективность бизнеса
-              </p>
+          {/* Ряд карточек — внизу фото */}
+          <div className="absolute bottom-0 left-0 right-0 z-[2]" style={{ height: 299 }}>
+            <div className="max-w-[1440px] mx-auto px-[140px] h-full flex">
+
+              {/* Белая карточка с цитатой */}
+              <div className="bg-white flex-none pl-[32px] pt-[167px]" style={{ width: '66.4%' }}>
+                <p className="text-[40px] font-normal text-[#0C2140] leading-[48px] tracking-[-2px]" style={{ maxWidth: 574 }}>
+                  «Самое ценное — доверие тех, кто работает со мной»
+                </p>
+              </div>
+
+              {/* Тёмная панель — frosted glass как в Figma */}
+              <div className="flex-1 bg-white/20 backdrop-blur-[40px] pl-[16px] pr-[16px] pt-[11px]">
+                {/* Логотип Митрофанова */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/image 14.png" alt="Митрофанова и партнёры" height={46} className="w-auto" />
+                <p className="text-white text-[14px] font-normal" style={{ maxWidth: 317, marginTop: 88, lineHeight: '16.8px' }}>
+                  Валентина Митрофанова — основательница консалтинговой компании «Митрофанова и партнёры»,
+                  эксперт с 20-летним опытом в управлении персоналом, производительностью труда и консалтинге.
+                  За годы работы помогла более 100 компаниям оптимизировать экономику труда и повысить эффективность бизнеса
+                </p>
+              </div>
+
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <>
       {/* ═══ HERO + СЕТКА УСЛУГ (единая секция с декоративным фоном) ═══ */}
-      <section className="bg-[#E7E9EC] -mt-[64px]">
+      <section className="bg-[#E7E9EC]">
         <div className="max-w-[1440px] mx-auto px-[140px] relative isolate overflow-hidden">
           {/* Декоративная иллюстрация: x=48, y=-3 от верха страницы */}
           <div className="absolute left-[48px] top-[-3px] pointer-events-none select-none z-[-1]">

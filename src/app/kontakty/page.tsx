@@ -31,7 +31,7 @@ export default function KontaktyPage() {
   return (
     <>
       {/* ═══ HERO + КОНТАКТЫ ═══════════════════════════════════════════ */}
-      <section className="bg-[#E7E9EC] -mt-[64px]">
+      <section className="bg-[#E7E9EC]">
         <div className="max-w-[1440px] mx-auto px-[140px] relative isolate overflow-hidden">
 
           {/* Декоративный элемент */}

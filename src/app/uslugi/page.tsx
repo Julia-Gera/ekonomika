@@ -9,7 +9,7 @@ export const metadata = { title: 'Услуги — Экономика труда
 export default function UslugiPage() {
   return (
     <>
-      <section className="bg-[#E7E9EC] -mt-[64px] overflow-hidden">
+      <section className="bg-[#E7E9EC] overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-[140px] relative isolate">
           <div className="absolute left-[48px] top-[-3px] pointer-events-none select-none z-[-1]">
             <Image
