@@ -36,7 +36,7 @@ export default function OKompaniiPage() {
   return (
     <>
       {/* ═══ HERO — полная ширина, фото уходит под хедер как в Figma ══ */}
-      <section className="bg-[#E7E9EC] pb-[74px] relative overflow-hidden" style={{ marginTop: -57 }}>
+      <section className="bg-[#E7E9EC] relative overflow-hidden" style={{ marginTop: -57 }}>
 
         {/* Полноширинное фото */}
         <div className="relative" style={{ height: 739 }}>
@@ -45,13 +45,13 @@ export default function OKompaniiPage() {
             src="/ЭкономикаТруда/99999.png"
             alt="Валентина Митрофанова"
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectPosition: 'center 15%' }}
+            style={{ objectPosition: 'center 40%' }}
           />
 
-          {/* Градиент: прозрачный → #0C2140 */}
+          {/* Градиент: прозрачный → #0C2140, только под левой частью */}
           <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(to bottom, transparent 40%, #0C2140 100%)' }}
+            className="absolute top-0 bottom-0 left-0 pointer-events-none"
+            style={{ width: '64%', background: 'linear-gradient(to bottom, transparent 40%, #0C2140 100%)' }}
           />
 
           {/* Хлебные крошки — внутри фото, ниже хедера */}
@@ -63,17 +63,26 @@ export default function OKompaniiPage() {
 
           {/* Ряд карточек — внизу фото */}
           <div className="absolute bottom-0 left-0 right-0 z-[2]" style={{ height: 299 }}>
-            <div className="max-w-[1440px] mx-auto px-[140px] h-full flex">
+            <div className="max-w-[1440px] mx-auto px-[140px] h-full flex gap-[8px]">
 
               {/* Белая карточка с цитатой */}
-              <div className="bg-white flex-none pl-[32px] pt-[167px]" style={{ width: '66.4%' }}>
-                <p className="text-[40px] font-normal text-[#0C2140] leading-[48px] tracking-[-2px]" style={{ maxWidth: 574 }}>
+              <div className="bg-white flex-none pl-[32px] pt-[167px] relative overflow-hidden" style={{ width: '66.4%' }}>
+                {/* Декоративный элемент */}
+                <div className="absolute top-0 right-0 pointer-events-none select-none">
+                  <svg width="262" height="300" viewBox="0 0 262 300" fill="none">
+                    <path
+                      d="M74.4202 144.963L187.58 0H0V144.963H74.4202L0 241.604V299.113H142.384L262 144.963H74.4202Z"
+                      fill="#DFE3E8"
+                    />
+                  </svg>
+                </div>
+                <p className="relative z-10 text-[40px] font-normal text-[#0C2140] leading-[48px] tracking-[-2px]" style={{ maxWidth: 574 }}>
                   «Самое ценное — доверие тех, кто работает со мной»
                 </p>
               </div>
 
               {/* Тёмная панель — frosted glass как в Figma */}
-              <div className="flex-1 bg-white/20 backdrop-blur-[40px] pl-[16px] pr-[16px] pt-[11px]">
+              <div className="flex-1 pl-[16px] pr-[16px] pt-[11px]" style={{ backgroundImage: 'url(/images/Rectangle%20147.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 {/* Логотип Митрофанова */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/image 14.png" alt="Митрофанова и партнёры" height={46} className="w-auto" />
