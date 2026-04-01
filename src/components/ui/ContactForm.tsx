@@ -39,7 +39,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-[16px]">
       {/* Row 1 */}
-      <div className="grid grid-cols-2 gap-[16px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
         <div>
           <label className={labelCls}>Ваше ФИО</label>
           <input type="text" placeholder="Введите ваше ФИО*" required className={inputCls}
@@ -53,7 +53,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       </div>
 
       {/* Row 2 */}
-      <div className="grid grid-cols-2 gap-[16px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
         <div>
           <label className={labelCls}>Ваш Email</label>
           <input type="email" placeholder="Email*" required className={inputCls}

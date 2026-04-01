@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 const slides = [
@@ -39,14 +39,25 @@ const ArrowRight = () => (
 
 export default function AboutSlider() {
   const [current, setCurrent] = useState(0)
-  const maxIndex = slides.length - 1
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < 768)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  // На мобиле: 1 слайд за раз (100%), на десктопе: 2 слайда (50%)
+  const slideWidth = isMobile ? 100 : 50
+  const maxIndex = isMobile ? slides.length - 1 : slides.length - 2
 
   return (
-    <div className="bg-[#0C2140] py-[60px]">
-      <div className="max-w-[1440px] mx-auto px-[140px]">
+    <div className="bg-[#0C2140] py-[40px] md:py-[60px]">
+      <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px]">
 
         {/* Метка секции */}
-        <div className="flex items-center gap-[8px] mb-[40px]">
+        <div className="flex items-center gap-[8px] mb-[32px] md:mb-[40px]">
           <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
             <polygon points="4,8 0,0 8,0" fill="#40BE27" />
           </svg>
@@ -55,34 +66,35 @@ export default function AboutSlider() {
           </span>
         </div>
 
-        {/* Трек: каждый слайд = 50%, видно 2 */}
+        {/* Трек */}
         <div className="overflow-hidden">
           <div
             className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${current * 50}%)` }}
+            style={{ transform: `translateX(-${current * slideWidth}%)` }}
           >
             {slides.map((slide, i) => (
               <div
                 key={i}
-                className="min-w-[50%] flex flex-col"
+                className="flex flex-col shrink-0"
                 style={{
+                  width: `${slideWidth}%`,
                   minHeight: 320,
-                  paddingRight: 40,
-                  paddingLeft: i === 0 ? 0 : 40,
-                  borderRight: '1px solid rgba(255,255,255,0.2)',
+                  paddingRight: isMobile ? 0 : 40,
+                  paddingLeft: isMobile ? 0 : (i === 0 ? 0 : 40),
+                  borderRight: isMobile ? 'none' : '1px solid rgba(255,255,255,0.2)',
                 }}
               >
                 {/* Заголовок */}
                 <h2
-                  className="text-white font-normal leading-[1.2] mb-auto"
-                  style={{ fontSize: 30, letterSpacing: '-1px' }}
+                  className="text-white font-normal leading-[1.2] mb-auto text-[22px] md:text-[30px]"
+                  style={{ letterSpacing: '-1px' }}
                 >
                   {slide.heading}
                 </h2>
 
                 {/* Низ: текст слева, картинка справа */}
-                <div className="flex items-end justify-between gap-6 mt-[40px]">
-                  <p className="text-white/60 text-[16px] leading-[1.55]" style={{ maxWidth: '55%' }}>
+                <div className="flex items-end justify-between gap-6 mt-[24px] md:mt-[40px]">
+                  <p className="text-white/60 text-[14px] md:text-[16px] leading-[1.55]" style={{ maxWidth: '65%' }}>
                     {slide.text}
                   </p>
                   <div className="shrink-0">
@@ -97,15 +109,14 @@ export default function AboutSlider() {
                 </div>
               </div>
             ))}
-            {/* Финальный пустой блок */}
-            <div className="min-w-[50%]" />
+            {!isMobile && <div className="shrink-0" style={{ width: '50%' }} />}
           </div>
         </div>
 
         {/* Стрелки */}
-        <div className="flex items-center gap-[8px] mt-[40px]">
+        <div className="flex items-center gap-[8px] mt-[32px] md:mt-[40px]">
           <button
-            onClick={() => setCurrent(i => i - 1)}
+            onClick={() => setCurrent(i => Math.max(0, i - 1))}
             disabled={current === 0}
             className="w-10 h-10 border border-white/30 flex items-center justify-center transition-colors hover:bg-white/10 disabled:opacity-30 cursor-pointer disabled:cursor-default"
             aria-label="Назад"
@@ -113,7 +124,7 @@ export default function AboutSlider() {
             <ArrowLeft />
           </button>
           <button
-            onClick={() => setCurrent(i => i + 1)}
+            onClick={() => setCurrent(i => Math.min(maxIndex, i + 1))}
             disabled={current === maxIndex}
             className="w-10 h-10 border border-white/30 flex items-center justify-center transition-colors hover:bg-white/10 disabled:opacity-30 cursor-pointer disabled:cursor-default"
             aria-label="Вперёд"

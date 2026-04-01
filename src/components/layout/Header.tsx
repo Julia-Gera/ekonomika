@@ -19,9 +19,9 @@ export default function Header() {
 
   return (
     <>
-      <header className="relative z-40">
-        <div className="max-w-[1440px] mx-auto px-[140px]">
-        <div className="bg-white flex items-center justify-between h-[57px]">
+      <header className="relative z-40 bg-white">
+        <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px]">
+        <div className="flex items-center justify-between h-[57px]">
           {/* Logo — 16px inset from content edge per Figma */}
           <Link href="/" className="shrink-0 ml-[16px]">
             <img

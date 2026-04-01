@@ -32,10 +32,10 @@ export default function KontaktyPage() {
     <>
       {/* ═══ HERO + КОНТАКТЫ ═══════════════════════════════════════════ */}
       <section className="bg-[#E7E9EC]">
-        <div className="max-w-[1440px] mx-auto px-[140px] relative isolate overflow-hidden">
+        <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px] relative isolate overflow-hidden">
 
           {/* Декоративный элемент */}
-          <div className="absolute left-[48px] top-[-3px] pointer-events-none select-none z-[-1]">
+          <div className="hidden md:block absolute left-[48px] top-[-3px] pointer-events-none select-none z-[-1]">
             <Image
               src="/images/hero-illustration.svg"
               alt=""
@@ -44,15 +44,15 @@ export default function KontaktyPage() {
             />
           </div>
 
-          <div className="grid grid-cols-2 mb-[74px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 mb-[40px] md:mb-[74px]">
 
             {/* Левая колонка: хлебные крошки + заголовок + строки контактов */}
             <div>
-              <div className="pt-[76px]">
+              <div className="pt-[40px] md:pt-[76px]">
                 <Breadcrumb items={[{ label: 'Контакты' }]} />
               </div>
 
-              <h1 className="text-[40px] font-normal text-[#0C2140] mt-[12px] tracking-[-2px]">
+              <h1 className="text-[30px] md:text-[40px] font-normal text-[#0C2140] mt-[12px] tracking-[-2px]">
                 Контакты
               </h1>
 
@@ -77,9 +77,9 @@ export default function KontaktyPage() {
               </div>
             </div>
 
-            {/* Правая колонка: карта */}
-            <div className="pt-[105px]">
-              <div className="h-[372px] overflow-hidden" style={{ backgroundColor: '#CED3D9' }}>
+            {/* Карта */}
+            <div className="mt-[24px] md:mt-0 md:pt-[105px]">
+              <div className="h-[240px] md:h-[372px] overflow-hidden" style={{ backgroundColor: '#CED3D9' }}>
                 <iframe
                   src="https://yandex.ru/map-widget/v1/?ll=37.596200%2C55.751200&z=17&pt=37.596200%2C55.751200%2Ccomma"
                   width="100%"

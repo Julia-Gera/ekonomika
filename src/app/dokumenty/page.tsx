@@ -44,20 +44,20 @@ export default function DokumentyPage() {
     <>
       {/* ═══ HERO + ДОКУМЕНТЫ ══════════════════════════════════════════ */}
       <section className="bg-[#E7E9EC]">
-        <div className="max-w-[1440px] mx-auto px-[140px] relative isolate overflow-hidden">
+        <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px] relative isolate overflow-hidden">
 
           {/* Декоративный элемент */}
-          <div className="absolute left-[48px] top-[-3px] pointer-events-none select-none z-[-1]">
+          <div className="hidden md:block absolute left-[48px] top-[-3px] pointer-events-none select-none z-[-1]">
             <Image src="/images/hero-illustration.svg" alt="" width={593} height={677} />
           </div>
 
           {/* Хлебные крошки */}
-          <div className="pt-[76px]">
+          <div className="pt-[40px] md:pt-[76px]">
             <Breadcrumb items={[{ label: 'Документы' }]} />
           </div>
 
           {/* Заголовок */}
-          <h1 className="text-[40px] font-normal text-[#0C2140] mt-[12px] tracking-[-2px]">
+          <h1 className="text-[30px] md:text-[40px] font-normal text-[#0C2140] mt-[12px] tracking-[-2px]">
             Документы
           </h1>
 
@@ -81,7 +81,7 @@ export default function DokumentyPage() {
           </div>
 
           {/* Карточки документов */}
-          <div className="grid grid-cols-2 gap-[8px] mt-[29px] mb-[74px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[8px] mt-[29px] mb-[40px] md:mb-[74px]">
             {filtered.length > 0 ? filtered.map(doc => (
               <div
                 key={doc.id}

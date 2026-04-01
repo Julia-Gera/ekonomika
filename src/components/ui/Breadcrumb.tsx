@@ -7,7 +7,7 @@ interface BreadcrumbItem {
 
 export default function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
   return (
-    <nav className="flex items-center gap-[8px] text-[14px] font-normal">
+    <nav className="hidden md:flex items-center gap-[8px] text-[14px] font-normal">
       <Link href="/" className="text-[#000000]">Главная</Link>
       {items.map((item, i) => (
         <span key={i} className="flex items-center gap-[8px]">

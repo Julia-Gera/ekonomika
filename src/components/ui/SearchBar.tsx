@@ -12,7 +12,7 @@ export default function SearchBar() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-[576px] max-w-full">
+    <form onSubmit={handleSubmit} className="w-full md:w-[576px]">
       <div className="flex items-center h-[39px] px-[10px] gap-[11px]" style={{ backgroundColor: '#CED3D9' }}>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0">
           <circle cx="7" cy="7" r="4.5" stroke="#6D7A8C" strokeWidth="1.3"/>

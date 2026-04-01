@@ -39,7 +39,7 @@ export default function OKompaniiPage() {
       <section className="bg-[#E7E9EC] relative overflow-hidden" style={{ marginTop: -57 }}>
 
         {/* Полноширинное фото */}
-        <div className="relative" style={{ height: 739 }}>
+        <div className="relative" style={{ height: 'clamp(400px, 55vw, 739px)' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/ЭкономикаТруда/99999.png"
@@ -48,42 +48,39 @@ export default function OKompaniiPage() {
             style={{ objectPosition: 'center 40%' }}
           />
 
-          {/* Градиент: прозрачный → #0C2140, только под левой частью */}
+          {/* Градиент */}
           <div
             className="absolute top-0 bottom-0 left-0 pointer-events-none"
             style={{ width: '64%', background: 'linear-gradient(to bottom, transparent 40%, #0C2140 100%)' }}
           />
 
-          {/* Хлебные крошки — внутри фото, ниже хедера */}
+          {/* Хлебные крошки */}
           <div className="absolute top-[81px] left-0 right-0 z-[2]">
-            <div className="max-w-[1440px] mx-auto px-[140px]">
+            <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px]">
               <Breadcrumb items={[{ label: 'О компании' }]} />
             </div>
           </div>
 
           {/* Ряд карточек — внизу фото */}
-          <div className="absolute bottom-0 left-0 right-0 z-[2]" style={{ height: 299 }}>
-            <div className="max-w-[1440px] mx-auto px-[140px] h-full flex gap-[8px]">
+          <div className="absolute bottom-0 left-0 right-0 z-[2]">
+            <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px] flex flex-col md:flex-row gap-[8px]" style={{ height: 'clamp(200px, 25vw, 299px)' }}>
 
               {/* Белая карточка с цитатой */}
-              <div className="bg-white flex-none pl-[32px] pt-[167px] relative overflow-hidden" style={{ width: '66.4%' }}>
-                {/* Декоративный элемент */}
-                <div className="absolute top-0 right-0 pointer-events-none select-none">
-                  <svg width="262" height="300" viewBox="0 0 262 300" fill="none">
-                    <path
-                      d="M74.4202 144.963L187.58 0H0V144.963H74.4202L0 241.604V299.113H142.384L262 144.963H74.4202Z"
-                      fill="#DFE3E8"
-                    />
-                  </svg>
+              <div className="bg-white flex-1 md:flex-none pl-[20px] md:pl-[32px] pt-[24px] md:pt-[167px] relative overflow-hidden" style={{ width: undefined }}>
+                <div className="md:w-[66.4%] md:absolute md:inset-0 md:pl-[32px] md:pt-[167px] relative z-10">
+                  <div className="hidden md:block absolute top-0 right-0 pointer-events-none select-none">
+                    <svg width="262" height="300" viewBox="0 0 262 300" fill="none">
+                      <path d="M74.4202 144.963L187.58 0H0V144.963H74.4202L0 241.604V299.113H142.384L262 144.963H74.4202Z" fill="#DFE3E8" />
+                    </svg>
+                  </div>
+                  <p className="relative z-10 text-[22px] md:text-[40px] font-normal text-[#0C2140] leading-[28px] md:leading-[48px] tracking-[-1px] md:tracking-[-2px]" style={{ maxWidth: 574 }}>
+                    «Самое ценное — доверие тех, кто работает со мной»
+                  </p>
                 </div>
-                <p className="relative z-10 text-[40px] font-normal text-[#0C2140] leading-[48px] tracking-[-2px]" style={{ maxWidth: 574 }}>
-                  «Самое ценное — доверие тех, кто работает со мной»
-                </p>
               </div>
 
-              {/* Тёмная панель — frosted glass как в Figma */}
-              <div className="flex-1 pl-[16px] pr-[16px] pt-[11px]" style={{ backgroundImage: 'url(/images/Rectangle%20147.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                {/* Логотип Митрофанова */}
+              {/* Тёмная панель */}
+              <div className="hidden md:block flex-1 pl-[16px] pr-[16px] pt-[11px]" style={{ backgroundImage: 'url(/images/Rectangle%20147.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/image 14.png" alt="Митрофанова и партнёры" height={46} className="w-auto" />
                 <p className="text-white text-[14px] font-normal" style={{ maxWidth: 317, marginTop: 88, lineHeight: '16.8px' }}>
@@ -96,20 +93,31 @@ export default function OKompaniiPage() {
             </div>
           </div>
         </div>
+
+        {/* Тёмная панель — только на мобиле, под фото */}
+        <div className="md:hidden px-[20px] py-[20px]" style={{ backgroundImage: 'url(/images/Rectangle%20147.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/image 14.png" alt="Митрофанова и партнёры" height={36} className="w-auto mb-[16px]" />
+          <p className="text-white text-[14px] font-normal leading-[1.5]">
+            Валентина Митрофанова — основательница консалтинговой компании «Митрофанова и партнёры»,
+            эксперт с 20-летним опытом в управлении персоналом, производительностью труда и консалтинге.
+            За годы работы помогла более 100 компаниям оптимизировать экономику труда и повысить эффективность бизнеса
+          </p>
+        </div>
       </section>
 
       {/* ═══ СЛАЙДЕР ════════════════════════════════════════════════════ */}
       <AboutSlider />
 
       {/* ═══ ФОТО-КОЛЛАЖ ════════════════════════════════════════════════ */}
-      <div className="bg-[#E7E9EC] pt-[10px] pb-[97px]">
-        <div className="max-w-[1440px] mx-auto px-[140px]">
-          <div className="flex gap-[12px] items-start">
-            <div className="shrink-0" style={{ width: 378, height: 444, overflow: 'hidden' }}>
+      <div className="bg-[#E7E9EC] pt-[10px] pb-[40px] md:pb-[97px]">
+        <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px]">
+          <div className="flex flex-col md:flex-row gap-[12px] items-start">
+            <div className="w-full md:w-auto md:shrink-0" style={{ height: 260 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/ЭкономикаТруда/Rectangle 12.png" alt="" className="w-full h-full object-cover object-center" style={{ objectPosition: 'center 60%' }} />
             </div>
-            <div className="flex-1" style={{ height: 644, overflow: 'hidden' }}>
+            <div className="w-full md:flex-1" style={{ height: 260 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/ЭкономикаТруда/image13.png" alt="Валентина Митрофанова" className="w-full h-full object-cover" />
             </div>
@@ -129,80 +137,68 @@ export default function OKompaniiPage() {
           <Image src="/images/hero-illustration.svg" alt="" width={593} height={677} />
         </div>
 
-        <div className="max-w-[1440px] mx-auto px-[140px]" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px]" style={{ position: 'relative', zIndex: 1 }}>
 
-          {/* Метка + текст — по центру */}
-          <div className="flex flex-col items-center text-center" style={{ marginBottom: 67 }}>
+          {/* Метка + текст */}
+          <div className="flex flex-col items-center text-center" style={{ marginBottom: 40 }}>
             <SectionLabel text="О компании" />
-            <p style={{
-              fontSize: 30, fontWeight: 500, color: '#0C2140',
-              lineHeight: '42px', letterSpacing: '-0.5px',
-              maxWidth: 1037, textAlign: 'center',
-            }}>
+            <p className="text-[18px] md:text-[30px] font-medium text-[#0C2140] leading-[1.4] md:leading-[42px]" style={{ letterSpacing: '-0.5px', maxWidth: 1037 }}>
               Компания «Митрофанова и партнёры» — лидер рынка консалтинга в области управления персоналом,
               повышения производительности и эффективности труда, нормирования и оплаты труда, юридических
               услуг в сфере трудового права и урегулирования конфликтов путем процедуры медиации
             </p>
           </div>
 
-          {/* Комплексный подход: 3 колонки — фото | пространство | текст */}
-          <div style={{ display: 'grid', gridTemplateColumns: '378px 1fr 383px' }}>
+          {/* Комплексный подход: на мобиле — текст сверху, фото снизу */}
+          <div className="flex flex-col md:grid gap-[24px] md:gap-0" style={{ gridTemplateColumns: '378px 1fr 383px' } as React.CSSProperties}>
 
-            {/* Левая колонка: фото */}
-            <div style={{ paddingTop: 167 }}>
+            {/* Фото — на мобиле снизу */}
+            <div className="order-2 md:order-1" style={{ paddingTop: 0 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/ЭкономикаТруда/Rectangle151.png"
                 alt="Комплексный подход"
+                className="md:mt-[167px]"
                 style={{ width: '100%', display: 'block' }}
               />
             </div>
 
-            {/* Декоративное пространство */}
-            <div />
+            {/* Декоративное пространство — только десктоп */}
+            <div className="hidden md:block" />
 
-            {/* Правая колонка: лейбл → заголовок → spacer 270px → описание */}
-            <div>
-              <p style={{
-                fontSize: 20, fontWeight: 400, color: '#0C2140',
-                lineHeight: '28px', letterSpacing: '-0.5px', marginBottom: 8,
-              }}>
+            {/* Текст — на мобиле сверху */}
+            <div className="order-1 md:order-3">
+              <p className="text-[16px] md:text-[20px] font-normal text-[#0C2140] leading-[1.4]" style={{ letterSpacing: '-0.5px', marginBottom: 8 }}>
                 Важнейшее преимущество компании «Митрофанова и партнёры» —
               </p>
-              <h2 style={{
-                fontSize: 40, fontWeight: 400, color: '#0C2140',
-                lineHeight: '48px', letterSpacing: '-2px', margin: 0,
-              }}>
+              <h2 className="text-[28px] md:text-[40px] font-normal text-[#0C2140] leading-[1.2] md:leading-[48px]" style={{ letterSpacing: '-2px', margin: 0 }}>
                 Комплексный подход
               </h2>
-              <div style={{ height: 270 }} />
-              <p style={{
-                fontSize: 18, fontWeight: 400, color: '#0C2140',
-                lineHeight: '21.6px', letterSpacing: '-0.5px',
-              }}>
+              <div className="hidden md:block" style={{ height: 270 }} />
+              <p className="text-[16px] md:text-[18px] font-normal text-[#0C2140] mt-[16px] md:mt-0" style={{ lineHeight: '1.5', letterSpacing: '-0.5px' }}>
                 Мы предлагаем только индивидуальные решения, ориентированные под специфику ситуации Заказчика,
                 давая клиентам возможность заниматься бизнесом, не отвлекаясь на рутину
               </p>
             </div>
-          </div>{/* grid */}
+          </div>
 
         </div>
       </div>
 
       {/* ═══ ЦИФРЫ ══════════════════════════════════════════════════════ */}
-      <div className="bg-[#E7E9EC] pb-[74px]">
-        <div className="max-w-[1440px] mx-auto px-[140px]">
-          <div className="grid grid-cols-4 gap-[8px]">
+      <div className="bg-[#E7E9EC] pb-[40px] md:pb-[74px]">
+        <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[8px]">
             {stats.map((stat, i) => (
-              <div key={i} className="bg-white p-5 flex flex-col justify-between" style={{ height: 284 }}>
+              <div key={i} className="bg-white p-5 flex flex-col justify-between min-h-[140px] md:min-h-[284px]">
                 <div
-                  className="text-[#0C2140] font-normal leading-none"
-                  style={{ fontSize: 40, letterSpacing: '-2px' }}
+                  className="text-[#0C2140] font-normal leading-none text-[32px] md:text-[40px]"
+                  style={{ letterSpacing: '-2px' }}
                 >
                   {stat.value}
                 </div>
                 <p
-                  className="text-[16px] font-normal text-[#0C2140] leading-[1.4]"
+                  className="text-[14px] md:text-[16px] font-normal text-[#0C2140] leading-[1.4] mt-[12px] md:mt-0"
                   style={{ letterSpacing: '-0.48px' }}
                 >
                   {stat.label}
