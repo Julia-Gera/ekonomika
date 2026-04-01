@@ -7,7 +7,6 @@ export async function POST(req: Request) {
     if (!name || !email || !phone) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
-    // TODO: Send email via Nodemailer when SMTP is configured
     console.log('Consultation request:', { name, phone, email, message, company })
     return NextResponse.json({ success: true })
   } catch {
