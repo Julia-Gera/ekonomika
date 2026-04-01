@@ -1,33 +1,31 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { articles } from '@/lib/placeholder-data';
-import { notFound } from 'next/navigation';
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { getArticleBySlug, getAllArticleSlugs } from '@/lib/api'
+import { notFound } from 'next/navigation'
 
 interface Props {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const article = articles.find((a) => a.slug === slug);
-  if (!article) return { title: 'Статья не найдена' };
+  const { slug } = await params
+  const article = await getArticleBySlug(slug)
+  if (!article) return { title: 'Статья не найдена' }
   return {
     title: article.title,
     description: article.excerpt,
-  };
+  }
 }
 
 export async function generateStaticParams() {
-  return articles.map((a) => ({ slug: a.slug }));
+  const slugs = await getAllArticleSlugs()
+  return slugs.map(slug => ({ slug }))
 }
 
 export default async function BlogArticlePage({ params }: Props) {
-  const { slug } = await params;
-  const article = articles.find((a) => a.slug === slug);
-
-  if (!article) {
-    notFound();
-  }
+  const { slug } = await params
+  const article = await getArticleBySlug(slug)
+  if (!article) notFound()
 
   return (
     <div className="bg-white">
@@ -57,18 +55,24 @@ export default async function BlogArticlePage({ params }: Props) {
 
       {/* Article content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="prose prose-lg max-w-none">
-          <p className="text-gray-600 text-xl leading-relaxed mb-8">
-            {article.excerpt}
-          </p>
-          <div className="bg-[#f8f9fb] border-l-4 border-[#3b82f6] p-6 rounded-r-lg mb-8">
-            <p className="text-gray-600 italic">
-              Полное содержание статьи будет загружено из CMS после подключения Strapi.
-            </p>
-          </div>
-        </div>
+        {article.cover && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={article.cover}
+            alt={article.title}
+            className="w-full max-h-[400px] object-cover mb-10 rounded"
+          />
+        )}
 
-        {/* Back link */}
+        {article.content ? (
+          <div
+            className="prose prose-lg max-w-none"
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
+        ) : (
+          <p className="text-gray-600 text-xl leading-relaxed mb-8">{article.excerpt}</p>
+        )}
+
         <div className="mt-12 pt-8 border-t border-gray-200">
           <Link
             href="/blog"
@@ -82,5 +86,5 @@ export default async function BlogArticlePage({ params }: Props) {
         </div>
       </div>
     </div>
-  );
+  )
 }

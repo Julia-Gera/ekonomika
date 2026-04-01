@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(jq \"paths\\(scalars\\) as $path | if getpath\\($path\\) == \"\"35:950\"\" then $path else empty end\")",
+      "Bash(jq .document.children[1].children[14].children[15])",
+      "Bash(jq .document.children[1].children[14])",
+      "Bash(jq .document.children[1].children[14].children[6].children[0].children[1])",
+      "Bash(jq .document.children[1].children[14].children[6])",
+      "Bash(jq .document.children[1].children[14].children[6].children[0])",
+      "Bash(jq \".document.children[1].children[14] | map\\(select\\(.id == \"\"36:1919\"\"\\)\\) | .[0] | .children | map\\({id: .id, name: .name, type: .type, y: .absoluteBoundingBox.y}\\)\")",
+      "Bash(jq \".. | objects | select\\(.id == \"\"36:1919\"\"\\)\")",
+      "Bash(jq \".. | objects | select\\(.id == \"\"37:2033\"\"\\)\")",
+      "Bash(jq \".. | objects | select\\(.id == \"\"36:1919\"\" or .parent.id == \"\"36:1919\"\"\\) | .children[]? | select\\(.type == \"\"RECTANGLE\"\" and .name | contains\\(\"\"image\"\"\\)\\) | {id: .id, name: .name, x: .absoluteBoundingBox.x, y: .absoluteBoundingBox.y, width: .absoluteBoundingBox.width, height: .absoluteBoundingBox.height}\")",
+      "Bash(jq \".. | objects | select\\(.id == \"\"37:2041\"\"\\)\")",
+      "Bash(jq \".. | objects | select\\(.id == \"\"36:1919\"\"\\) | .children | map\\(select\\(.type == \"\"RECTANGLE\"\"\\)\\) | sort_by\\(.absoluteBoundingBox.width\\) | reverse | .[] | {id: .id, name: .name, x: .absoluteBoundingBox.x, y: .absoluteBoundingBox.y, width: .absoluteBoundingBox.width, height: .absoluteBoundingBox.height, hasImage: \\(.fills[0].type == \"\"IMAGE\"\"\\)}\")",
+      "Bash(jq \".. | objects | select\\(.type == \"\"FRAME\"\" and .absoluteBoundingBox.y >= 13350 and .absoluteBoundingBox.y <= 13500\\) | {id: .id, name: .name, x: .absoluteBoundingBox.x, y: .absoluteBoundingBox.y, width: .absoluteBoundingBox.width, height: .absoluteBoundingBox.height, children: \\(.children | length\\)}\")",
+      "Bash(jq \".. | objects | select\\(.type == \"\"FRAME\"\" and .absoluteBoundingBox.y >= 13000 and .absoluteBoundingBox.y <= 13800\\) | {id: .id, name: .name, x: .absoluteBoundingBox.x, y: .absoluteBoundingBox.y, width: .absoluteBoundingBox.width, height: .absoluteBoundingBox.height, children: \\(.children | length\\)}\")",
+      "Bash(jq \".. | objects | select\\(.id == \"\"36:1919\"\"\\) | .children | map\\(select\\(.absoluteBoundingBox.y < 13800\\)\\) | map\\({id: .id, name: .name, type: .type, x: .absoluteBoundingBox.x, y: .absoluteBoundingBox.y, width: .absoluteBoundingBox.width, height: .absoluteBoundingBox.height}\\)\")",
+      "Bash(jq \".. | objects | select\\(.id == \"\"36:2019\"\" or .id == \"\"37:2033\"\" or .id == \"\"37:2039\"\" or .id == \"\"37:2034\"\" or .id == \"\"37:2041\"\"\\)\")",
+      "Bash(jq \".. | objects | select\\(.id == \"\"70:595\"\"\\)\")",
+      "Bash(jq \".. | objects | select\\(.id == \"\"37:2033\"\"\\) | {layoutMode: .layoutMode, primaryAxisAlignItems: .primaryAxisAlignItems, counterAxisAlignItems: .counterAxisAlignItems, primaryAxisSizingMode: .primaryAxisSizingMode, counterAxisSizingMode: .counterAxisSizingMode, itemSpacing: .itemSpacing, paddingLeft: .paddingLeft, paddingRight: .paddingRight, paddingTop: .paddingTop, paddingBottom: .paddingBottom}\")",
+      "Bash(sips -g pixelWidth -g pixelHeight \"/Users/pavel/Documents/ekonomika-truda/public/ЭкономикаТруда/icon.png\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(jq .components[\"\"34:360\"\"] /Users/pavel/Documents/ekonomika-truda/.figma/design.json)",
+      "Bash(jq '.document.children[] | select\\(.name | test\\(\"\"icon|Icon\"\"; \"\"i\"\"\\)\\) | {name: .name, type: .type}' /Users/pavel/Documents/ekonomika-truda/.figma/design.json)",
+      "Bash(jq \".document.children[].children[]? | select\\(.name | test\\(\"\"34:360|icon\"\"; \"\"i\"\"\\)\\) | {name: .name, id: .id, type: .type}\" /Users/pavel/Documents/ekonomika-truda/.figma/design.json)",
+      "Bash(jq '.document.children[].children[] | select\\(.id == \"\"34:360\"\"\\)' /Users/pavel/Documents/ekonomika-truda/.figma/design.json)",
+      "Bash(jq '.document.children[].children[] | select\\(.id == \"\"34:360\"\"\\) | .children[0]' /Users/pavel/Documents/ekonomika-truda/.figma/design.json)",
+      "Bash(jq '.document.children[].children[] | select\\(.id == \"\"34:360\"\"\\) | .children[0] | keys' /Users/pavel/Documents/ekonomika-truda/.figma/design.json)"
+    ]
+  }
+}

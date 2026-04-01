@@ -102,14 +102,18 @@ export default function OKompaniiPage() {
       <AboutSlider />
 
       {/* ═══ ФОТО-КОЛЛАЖ ════════════════════════════════════════════════ */}
-      <div className="grid grid-cols-2">
-        <div className="relative" style={{ height: 400 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/ЭкономикаТруда/Rectangle 12.png" alt="" className="w-full h-full object-cover" />
-        </div>
-        <div className="relative" style={{ height: 400 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/ЭкономикаТруда/image13.png" alt="Валентина Митрофанова" className="w-full h-full object-cover" />
+      <div className="bg-[#E7E9EC] pt-[10px] pb-[97px]">
+        <div className="max-w-[1440px] mx-auto px-[140px]">
+          <div className="flex gap-[12px] items-start">
+            <div className="shrink-0" style={{ width: 378, height: 444, overflow: 'hidden' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/ЭкономикаТруда/Rectangle 12.png" alt="" className="w-full h-full object-cover object-center" style={{ objectPosition: 'center 60%' }} />
+            </div>
+            <div className="flex-1" style={{ height: 644, overflow: 'hidden' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/ЭкономикаТруда/image13.png" alt="Валентина Митрофанова" className="w-full h-full object-cover" />
+            </div>
+          </div>
         </div>
       </div>
 

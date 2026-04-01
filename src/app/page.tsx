@@ -3,9 +3,12 @@ import ServiceCard from '@/components/ui/ServiceCard'
 import ArticleCard from '@/components/ui/ArticleCard'
 import ContactFormSection from '@/components/sections/ContactFormSection'
 import SearchBar from '@/components/ui/SearchBar'
-import { services, articles } from '@/lib/placeholder-data'
+import { services } from '@/lib/placeholder-data'
+import { getArticles } from '@/lib/api'
 
-export default function HomePage() {
+export default async function HomePage() {
+  const articles = await getArticles(3)
+
   return (
     <>
       {/* ═══ HERO + СЕТКА УСЛУГ (единая секция с декоративным фоном) ═══ */}
@@ -50,7 +53,7 @@ export default function HomePage() {
       {/* ═══ ПОСЛЕДНИЕ НОВОСТИ ═══════════════════════════════════════ */}
       <section className="bg-[#E7E9EC] pt-[76px] pb-[76px]">
         <div className="max-w-[1440px] mx-auto px-[140px]">
-          <h2 className="text-[30px] font-normal text-[#0C2140] mb-[76px]">
+          <h2 className="text-[30px] font-normal text-[#0C2140] mb-[32px]">
             Последние новости
           </h2>
           <div className="grid grid-cols-3 gap-[10px]">
