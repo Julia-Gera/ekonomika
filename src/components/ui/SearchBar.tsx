@@ -23,7 +23,8 @@ export default function SearchBar() {
           placeholder="Поиск по сайту"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          className="flex-1 text-[14px] font-normal text-[#0C2140] placeholder:text-[#6D7A8C] outline-none bg-transparent"
+          className="flex-1 text-[16px] md:text-[14px] font-normal text-[#0C2140] placeholder:text-[#6D7A8C] outline-none bg-transparent"
+          style={{ fontSize: 16 }}
         />
       </div>
     </form>
