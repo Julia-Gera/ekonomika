@@ -11,22 +11,21 @@ const tabs = [
 ]
 
 const documents = [
-  {
-    id: 1,
-    icon: '/images/doc-icon-1.svg',
-    type: 'DOC',
-    typeBg: '#207AE2',
-    title: 'Консультации по трудовому праву в режиме абонентского сопровождения',
-    tab: 'templates',
-  },
-  {
-    id: 2,
-    icon: '/images/doc-icon-2.svg',
-    type: 'PDF',
-    typeBg: '#FF0004',
-    title: 'Разовые консультации по трудовому праву',
-    tab: 'templates',
-  },
+  // Шаблоны
+  { id: 1,  icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Консультации по трудовому праву в режиме абонентского сопровождения', tab: 'templates', file: '/documents/shablon-konsultacii-trudovoe-pravo.pdf' },
+  { id: 2,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Разовые консультации по трудовому праву', tab: 'templates', file: '/documents/shablon-razovye-konsultacii.pdf' },
+  { id: 3,  icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Трудовой договор (шаблон)', tab: 'templates', file: '/documents/shablon-trudovoy-dogovor.pdf' },
+  { id: 4,  icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Положение об оплате труда', tab: 'templates', file: '/documents/shablon-polozhenie-ob-oplate.pdf' },
+  { id: 5,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Должностная инструкция (шаблон)', tab: 'templates', file: '/documents/shablon-dolzhnostnaya-instrukciya.pdf' },
+  // Чек-листы
+  { id: 6,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Чек-лист по самоаудиту кадровых документов', tab: 'checklists', file: '/documents/chek-list-samoaudit.pdf' },
+  { id: 7,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Чек-лист по охране труда', tab: 'checklists', file: '/documents/chek-list-oxrana-truda.pdf' },
+  { id: 8,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Чек-лист: кадровый аудит компании', tab: 'checklists', file: '/documents/chek-list-kadrovyy-audit.pdf' },
+  { id: 9,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Чек-лист по трудовым спорам', tab: 'checklists', file: '/documents/chek-list-trudovye-spory.pdf' },
+  // Документация
+  { id: 10, icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Регламент о защите персональных данных', tab: 'docs', file: '/documents/dok-reglament-personalnye-dannye.pdf' },
+  { id: 11, icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Правила внутреннего трудового распорядка', tab: 'docs', file: '/documents/dok-pravila-vnutrennego-rasporyadka.pdf' },
+  { id: 12, icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Положение о заработной плате', tab: 'docs', file: '/documents/dok-polozhenie-o-zarabotnoy-plate.pdf' },
 ]
 
 const RedirectIcon = () => (
@@ -83,10 +82,12 @@ export default function DokumentyPage() {
           {/* Карточки документов */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[8px] mt-[29px] mb-[40px] md:mb-[74px]">
             {filtered.length > 0 ? filtered.map(doc => (
-              <div
+              <a
                 key={doc.id}
-                className="flex"
-                style={{ height: 120, backgroundColor: '#ffffff', padding: 10 }}
+                href={doc.file}
+                download
+                className="flex cursor-pointer hover:opacity-80 transition-opacity"
+                style={{ height: 120, backgroundColor: '#ffffff', padding: 10, textDecoration: 'none' }}
               >
                 {/* Серый квадрат с иконкой */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -123,7 +124,7 @@ export default function DokumentyPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </a>
             )) : (
               <p className="text-[16px] font-normal text-[#6D7A8C] col-span-2 py-[40px]">
                 Документы отсутствуют

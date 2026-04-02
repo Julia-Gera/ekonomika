@@ -39,18 +39,17 @@ export default function OKompaniiPage() {
       <section className="bg-[#E7E9EC] relative overflow-hidden" style={{ marginTop: -57 }}>
 
         {/* Полноширинное фото */}
-        <div className="relative" style={{ height: 'clamp(400px, 55vw, 739px)' }}>
+        <div className="relative h-[520px] md:h-[739px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/ЭкономикаТруда/99999.png"
+            src="/9999_1140__11.png"
             alt="Валентина Митрофанова"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectPosition: 'center 40%' }}
+            className="absolute inset-0 w-full h-full object-cover [object-position:50%_20%] md:[object-position:center_15%]"
           />
 
-          {/* Градиент */}
+          {/* Градиент — только десктоп */}
           <div
-            className="absolute top-0 bottom-0 left-0 pointer-events-none"
+            className="hidden md:block absolute top-0 bottom-0 left-0 pointer-events-none"
             style={{ width: '64%', background: 'linear-gradient(to bottom, transparent 40%, #0C2140 100%)' }}
           />
 
@@ -61,26 +60,20 @@ export default function OKompaniiPage() {
             </div>
           </div>
 
-          {/* Ряд карточек — внизу фото */}
-          <div className="absolute bottom-0 left-0 right-0 z-[2]">
-            <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px] flex flex-col md:flex-row gap-[8px]" style={{ height: 'clamp(200px, 25vw, 299px)' }}>
-
-              {/* Белая карточка с цитатой */}
-              <div className="bg-white flex-1 md:flex-none pl-[20px] md:pl-[32px] pt-[24px] md:pt-[167px] relative overflow-hidden" style={{ width: undefined }}>
-                <div className="md:w-[66.4%] md:absolute md:inset-0 md:pl-[32px] md:pt-[167px] relative z-10">
-                  <div className="hidden md:block absolute top-0 right-0 pointer-events-none select-none">
-                    <svg width="262" height="300" viewBox="0 0 262 300" fill="none">
-                      <path d="M74.4202 144.963L187.58 0H0V144.963H74.4202L0 241.604V299.113H142.384L262 144.963H74.4202Z" fill="#DFE3E8" />
-                    </svg>
-                  </div>
-                  <p className="relative z-10 text-[22px] md:text-[40px] font-normal text-[#0C2140] leading-[28px] md:leading-[48px] tracking-[-1px] md:tracking-[-2px]" style={{ maxWidth: 574 }}>
-                    «Самое ценное — доверие тех, кто работает со мной»
-                  </p>
+          {/* Ряд карточек — внизу фото, только десктоп */}
+          <div className="hidden md:block absolute bottom-0 left-0 right-0 z-[2]" style={{ height: 299 }}>
+            <div className="max-w-[1440px] mx-auto px-[140px] h-full flex gap-[8px]">
+              <div className="bg-white flex-none pl-[32px] pt-[167px] relative overflow-hidden" style={{ width: '66.4%' }}>
+                <div className="absolute top-0 right-0 pointer-events-none select-none">
+                  <svg width="262" height="300" viewBox="0 0 262 300" fill="none">
+                    <path d="M74.4202 144.963L187.58 0H0V144.963H74.4202L0 241.604V299.113H142.384L262 144.963H74.4202Z" fill="#DFE3E8" />
+                  </svg>
                 </div>
+                <p className="relative z-10 text-[40px] font-normal text-[#0C2140] leading-[48px] tracking-[-2px]" style={{ maxWidth: 574 }}>
+                  «Самое ценное — доверие тех, кто работает со мной»
+                </p>
               </div>
-
-              {/* Тёмная панель */}
-              <div className="hidden md:block flex-1 pl-[16px] pr-[16px] pt-[11px]" style={{ backgroundImage: 'url(/images/Rectangle%20147.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+              <div className="flex-1 pl-[16px] pr-[16px] pt-[11px]" style={{ backgroundImage: 'url(/images/Rectangle%20147.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/image 14.png" alt="Митрофанова и партнёры" height={46} className="w-auto" />
                 <p className="text-white text-[14px] font-normal" style={{ maxWidth: 317, marginTop: 88, lineHeight: '16.8px' }}>
@@ -89,21 +82,25 @@ export default function OKompaniiPage() {
                   За годы работы помогла более 100 компаниям оптимизировать экономику труда и повысить эффективность бизнеса
                 </p>
               </div>
-
             </div>
           </div>
+
+          {/* Мобиле: цитата поверх фото */}
+          <div className="md:hidden absolute bottom-0 z-[2] bg-white overflow-hidden" style={{ height: '38%', width: '82%', marginLeft: '10%' }}>
+            <div className="absolute top-0 right-0 pointer-events-none select-none opacity-60">
+              <svg width="130" height="150" viewBox="0 0 262 300" fill="none">
+                <path d="M74.4202 144.963L187.58 0H0V144.963H74.4202L0 241.604V299.113H142.384L262 144.963H74.4202Z" fill="#DFE3E8" />
+              </svg>
+            </div>
+            <div className="absolute bottom-[24px] left-[20px] right-[20px]">
+              <p className="text-[22px] font-normal text-[#0C2140] leading-[28px] tracking-[-1px]">
+                «Самое ценное — доверие тех, кто работает со мной»
+              </p>
+            </div>
+          </div>
+
         </div>
 
-        {/* Тёмная панель — только на мобиле, под фото */}
-        <div className="md:hidden px-[20px] py-[20px]" style={{ backgroundImage: 'url(/images/Rectangle%20147.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/image 14.png" alt="Митрофанова и партнёры" height={36} className="w-auto mb-[16px]" />
-          <p className="text-white text-[14px] font-normal leading-[1.5]">
-            Валентина Митрофанова — основательница консалтинговой компании «Митрофанова и партнёры»,
-            эксперт с 20-летним опытом в управлении персоналом, производительностью труда и консалтинге.
-            За годы работы помогла более 100 компаниям оптимизировать экономику труда и повысить эффективность бизнеса
-          </p>
-        </div>
       </section>
 
       {/* ═══ СЛАЙДЕР ════════════════════════════════════════════════════ */}
@@ -112,15 +109,21 @@ export default function OKompaniiPage() {
       {/* ═══ ФОТО-КОЛЛАЖ ════════════════════════════════════════════════ */}
       <div className="bg-[#E7E9EC] pt-[10px] pb-[40px] md:pb-[97px]">
         <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px]">
-          <div className="flex flex-col md:flex-row gap-[12px] items-start">
-            <div className="w-full md:w-auto md:shrink-0" style={{ height: 260 }}>
+          {/* Десктоп */}
+          <div className="hidden md:flex gap-[12px] items-start">
+            <div style={{ width: 378, height: 444, flexShrink: 0 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/ЭкономикаТруда/Rectangle 12.png" alt="" className="w-full h-full object-cover object-center" style={{ objectPosition: 'center 60%' }} />
+              <img src="/Rectangle 149.png" alt="" className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
             </div>
-            <div className="w-full md:flex-1" style={{ height: 260 }}>
+            <div style={{ width: 770, height: 644, flexShrink: 0 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/ЭкономикаТруда/image13.png" alt="Валентина Митрофанова" className="w-full h-full object-cover" />
+              <img src="/Rectangle 150.png" alt="Валентина Митрофанова" className="w-full h-full object-cover" />
             </div>
+          </div>
+          {/* Мобиле */}
+          <div className="md:hidden" style={{ height: 300 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/Rectangle 150.png" alt="Валентина Митрофанова" className="w-full h-full object-cover" />
           </div>
         </div>
       </div>
@@ -149,37 +152,49 @@ export default function OKompaniiPage() {
             </p>
           </div>
 
-          {/* Комплексный подход: на мобиле — текст сверху, фото снизу */}
-          <div className="flex flex-col md:grid gap-[24px] md:gap-0" style={{ gridTemplateColumns: '378px 1fr 383px' } as React.CSSProperties}>
-
-            {/* Фото — на мобиле снизу */}
-            <div className="order-2 md:order-1" style={{ paddingTop: 0 }}>
+          {/* Комплексный подход */}
+          {/* Десктоп: grid 3 колонки (фото | пространство | текст) */}
+          {/* Мобиле: flex-col, текст сверху, фото снизу */}
+          <div className="hidden md:grid" style={{ gridTemplateColumns: '378px 1fr 383px' }}>
+            {/* Фото */}
+            <div style={{ paddingTop: 167 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/ЭкономикаТруда/Rectangle151.png"
-                alt="Комплексный подход"
-                className="md:mt-[167px]"
-                style={{ width: '100%', display: 'block' }}
-              />
+              <img src="/ЭкономикаТруда/Rectangle151.png" alt="Комплексный подход" style={{ width: '100%', display: 'block' }} />
             </div>
-
-            {/* Декоративное пространство — только десктоп */}
-            <div className="hidden md:block" />
-
-            {/* Текст — на мобиле сверху */}
-            <div className="order-1 md:order-3">
-              <p className="text-[16px] md:text-[20px] font-normal text-[#0C2140] leading-[1.4]" style={{ letterSpacing: '-0.5px', marginBottom: 8 }}>
+            {/* Декоративное пространство */}
+            <div />
+            {/* Текст */}
+            <div>
+              <p style={{ fontSize: 20, fontWeight: 400, color: '#0C2140', lineHeight: '28px', letterSpacing: '-0.5px', marginBottom: 8 }}>
                 Важнейшее преимущество компании «Митрофанова и партнёры» —
               </p>
-              <h2 className="text-[28px] md:text-[40px] font-normal text-[#0C2140] leading-[1.2] md:leading-[48px]" style={{ letterSpacing: '-2px', margin: 0 }}>
+              <h2 style={{ fontSize: 40, fontWeight: 400, color: '#0C2140', lineHeight: '48px', letterSpacing: '-2px', margin: 0 }}>
                 Комплексный подход
               </h2>
-              <div className="hidden md:block" style={{ height: 270 }} />
-              <p className="text-[16px] md:text-[18px] font-normal text-[#0C2140] mt-[16px] md:mt-0" style={{ lineHeight: '1.5', letterSpacing: '-0.5px' }}>
+              <div style={{ height: 270 }} />
+              <p style={{ fontSize: 18, fontWeight: 400, color: '#0C2140', lineHeight: '21.6px', letterSpacing: '-0.5px' }}>
                 Мы предлагаем только индивидуальные решения, ориентированные под специфику ситуации Заказчика,
                 давая клиентам возможность заниматься бизнесом, не отвлекаясь на рутину
               </p>
             </div>
+          </div>
+
+          {/* Мобиле версия */}
+          <div className="flex flex-col gap-[24px] md:hidden">
+            <div>
+              <p className="text-[16px] font-normal text-[#0C2140] leading-[1.4]" style={{ letterSpacing: '-0.5px', marginBottom: 8 }}>
+                Важнейшее преимущество компании «Митрофанова и партнёры» —
+              </p>
+              <h2 className="text-[28px] font-normal text-[#0C2140] leading-[1.2]" style={{ letterSpacing: '-2px', margin: 0 }}>
+                Комплексный подход
+              </h2>
+              <p className="text-[16px] font-normal text-[#0C2140] mt-[16px]" style={{ lineHeight: '1.5', letterSpacing: '-0.5px' }}>
+                Мы предлагаем только индивидуальные решения, ориентированные под специфику ситуации Заказчика,
+                давая клиентам возможность заниматься бизнесом, не отвлекаясь на рутину
+              </p>
+            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/ЭкономикаТруда/Rectangle151.png" alt="Комплексный подход" style={{ width: '100%', display: 'block' }} />
           </div>
 
         </div>
