@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { useConsultation } from '@/lib/consultation-context'
@@ -24,12 +25,13 @@ export default function Header() {
         <div className="flex items-center justify-between h-[57px]">
           {/* Logo — 16px inset from content edge per Figma */}
           <Link href="/" className="shrink-0 ml-[16px]">
-            <img
-              src="/ЭкономикаТруда/Logo.png"
+            <Image
+              src="/company-logo.png"
               alt="Экономика труда"
               width={138}
-              height={31}
+              height={35}
               className="h-[31px] w-auto"
+              priority
             />
           </Link>
 

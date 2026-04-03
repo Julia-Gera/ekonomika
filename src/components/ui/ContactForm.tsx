@@ -9,21 +9,35 @@ interface ContactFormProps {
 export default function ContactForm({ onSuccess }: ContactFormProps) {
   const [agreed, setAgreed] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', message: '' })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!agreed) return
+
     setLoading(true)
+    setError('')
+
     try {
-      await fetch('/api/consultation', {
+      const response = await fetch('/api/consultation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
+
+      if (!response.ok) {
+        throw new Error('Request failed')
+      }
+
       onSuccess?.()
-    } catch {}
-    setLoading(false)
+      setForm({ name: '', company: '', email: '', phone: '', message: '' })
+      setAgreed(false)
+    } catch {
+      setError('Не удалось отправить заявку. Попробуйте еще раз.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   /* Figma: cornerRadius:4, strokes:[], fill:#fff, padding:14px, h:45px */
@@ -69,7 +83,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       {/* Textarea — Figma h:94px внутри строки h:119 (17 label + 8 gap + 94) */}
       <div>
         <label className={labelCls}>Ваше сообщение</label>
-        <textarea placeholder="Введите ваше сообщение*"
+        <textarea placeholder="Введите ваше сообщение"
           className={[
             'w-full bg-white rounded px-[14px] py-[14px] h-[94px]',
             'text-[14px] font-normal text-[#0C2140] placeholder:text-[#6D7A8C]',
@@ -105,6 +119,10 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           </Link>
         </span>
       </div>
+
+      {error && (
+        <p className="text-[14px] font-normal text-[#b42318]">{error}</p>
+      )}
 
       {/* Submit button — Figma: px:32 py:16, no cornerRadius, #9ea6b3 disabled */}
       <button

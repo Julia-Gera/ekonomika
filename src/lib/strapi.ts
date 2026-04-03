@@ -1,4 +1,8 @@
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+import 'server-only'
+import { getStrapiUrl } from './site'
+
+const STRAPI_URL = getStrapiUrl()
+const STRAPI_TIMEOUT_MS = Number(process.env.STRAPI_TIMEOUT_MS ?? 2500)
 
 // ─── Типы ────────────────────────────────────────────────────────────────────
 
@@ -25,19 +29,65 @@ export interface Service {
   icon?: string | null
 }
 
+interface StrapiMedia {
+  url?: string | null
+}
+
+interface StrapiArticleRecord {
+  id: number
+  slug?: string
+  title?: string
+  excerpt?: string
+  content?: string
+  date?: string | null
+  publishedAt?: string | null
+  category?: string
+  cover?: StrapiMedia | null
+}
+
+interface StrapiServiceRecord {
+  id: number
+  slug?: string
+  title?: string
+  description?: string
+  content?: string
+  number?: string
+  order?: number
+  price?: string
+  icon?: StrapiMedia | null
+}
+
+interface StrapiCollectionResponse<T> {
+  data?: T[]
+}
+
 // ─── Базовый fetch ────────────────────────────────────────────────────────────
 
-async function fetchFromStrapi<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
-  const url = new URL(`${STRAPI_URL}/api/${endpoint}`)
+async function fetchFromStrapi<T>(endpoint: string, params?: Record<string, string>): Promise<T | null> {
+  if (!STRAPI_URL) {
+    return null
+  }
+
+  const url = new URL(`/api/${endpoint}`, STRAPI_URL)
   if (params) {
     Object.entries(params).forEach(([k, v]) => url.searchParams.append(k, v))
   }
-  const res = await fetch(url.toString(), {
-    next: { revalidate: 60 },
-    headers: { 'Content-Type': 'application/json' },
-  })
-  if (!res.ok) throw new Error(`Strapi ${res.status}: ${endpoint}`)
-  return res.json()
+
+  try {
+    const res = await fetch(url.toString(), {
+      next: { revalidate: 60 },
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(STRAPI_TIMEOUT_MS),
+    })
+
+    if (!res.ok) {
+      throw new Error(`Strapi ${res.status}: ${endpoint}`)
+    }
+
+    return res.json() as Promise<T>
+  } catch {
+    return null
+  }
 }
 
 // ─── Маппинг Strapi v5 → формат приложения ───────────────────────────────────
@@ -48,13 +98,21 @@ function formatDate(raw: string | null | undefined): string {
   return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
-// Strapi v5: поля прямо на объекте (без .attributes)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mapArticle(item: any): Article {
+function getMediaUrl(media?: StrapiMedia | null) {
+  if (!media?.url) {
+    return null
+  }
+
+  if (media.url.startsWith('http')) {
+    return media.url
+  }
+
+  return STRAPI_URL ? new URL(media.url, STRAPI_URL).toString() : null
+}
+
+function mapArticle(item: StrapiArticleRecord): Article {
   const cover = item.cover?.url
-    ? item.cover.url.startsWith('http')
-      ? item.cover.url
-      : `${STRAPI_URL}${item.cover.url}`
+    ? getMediaUrl(item.cover)
     : null
   return {
     id: item.id,
@@ -68,13 +126,8 @@ function mapArticle(item: any): Article {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mapService(item: any): Service {
-  const icon = item.icon?.url
-    ? item.icon.url.startsWith('http')
-      ? item.icon.url
-      : `${STRAPI_URL}${item.icon.url}`
-    : null
+function mapService(item: StrapiServiceRecord): Service {
+  const icon = item.icon?.url ? getMediaUrl(item.icon) : null
   return {
     id: item.id,
     slug: item.slug ?? '',
@@ -91,54 +144,70 @@ function mapService(item: any): Service {
 // ─── API функции ──────────────────────────────────────────────────────────────
 
 export async function getArticles(limit = 10, page = 1): Promise<Article[]> {
-  try {
-    const data = await fetchFromStrapi<any>('articles', {
+  const data = await fetchFromStrapi<StrapiCollectionResponse<StrapiArticleRecord>>(
+    'articles',
+    {
       'populate': 'cover',
       'pagination[pageSize]': String(limit),
       'pagination[page]': String(page),
       'sort': 'date:desc',
-    })
-    return (data.data ?? []).map(mapArticle)
-  } catch {
+    }
+  )
+
+  if (!data?.data?.length) {
     return []
   }
+
+  return data.data.map(mapArticle)
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  try {
-    const data = await fetchFromStrapi<any>('articles', {
+  const data = await fetchFromStrapi<StrapiCollectionResponse<StrapiArticleRecord>>(
+    'articles',
+    {
       'filters[slug][$eq]': slug,
       'populate': '*',
-    })
-    const item = data.data?.[0]
-    return item ? mapArticle(item) : null
-  } catch {
+    }
+  )
+
+  const item = data?.data?.[0]
+  if (!item) {
     return null
   }
+
+  return mapArticle(item)
 }
 
 export async function getServices(limit = 20): Promise<Service[]> {
-  try {
-    const data = await fetchFromStrapi<any>('services', {
+  const data = await fetchFromStrapi<StrapiCollectionResponse<StrapiServiceRecord>>(
+    'services',
+    {
       'populate': 'icon',
       'pagination[pageSize]': String(limit),
       'sort': 'order:asc',
-    })
-    return (data.data ?? []).map(mapService)
-  } catch {
+    }
+  )
+
+  if (!data?.data?.length) {
     return []
   }
+
+  return data.data.map(mapService)
 }
 
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
-  try {
-    const data = await fetchFromStrapi<any>('services', {
+  const data = await fetchFromStrapi<StrapiCollectionResponse<StrapiServiceRecord>>(
+    'services',
+    {
       'filters[slug][$eq]': slug,
       'populate': '*',
-    })
-    const item = data.data?.[0]
-    return item ? mapService(item) : null
-  } catch {
+    }
+  )
+
+  const item = data?.data?.[0]
+  if (!item) {
     return null
   }
+
+  return mapService(item)
 }

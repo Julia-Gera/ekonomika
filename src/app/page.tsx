@@ -69,7 +69,7 @@ export default async function HomePage() {
                 date={a.date}
                 category={a.category}
                 title={a.title}
-                href={`/stati/${a.slug}`}
+                href={`/blog/${a.slug}`}
               />
             ))}
           </div>

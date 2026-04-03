@@ -23,7 +23,7 @@ export default function ContactFormSection() {
             </div>
             <div className="relative hidden md:block min-h-[400px] overflow-hidden">
               <Image
-                src="/images/form-photo.png"
+                src="/images/form-photo.jpg"
                 alt="Команда Экономика труда"
                 fill
                 className="object-cover object-center"
@@ -52,7 +52,7 @@ export default function ContactFormSection() {
           {/* Фото — на мобиле снизу, на десктопе рядом */}
           <div className="relative min-h-[240px] md:min-h-[400px] overflow-hidden">
             <Image
-              src="/images/form-photo.png"
+              src="/images/form-photo.jpg"
               alt="Команда Экономика труда"
               fill
               className="object-cover object-center"

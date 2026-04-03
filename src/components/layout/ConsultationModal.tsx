@@ -8,20 +8,24 @@ export default function ConsultationModal() {
   const [success, setSuccess] = useState(false)
 
   useEffect(() => {
-    if (!isOpen) setSuccess(false)
     if (isOpen) document.body.style.overflow = 'hidden'
     else document.body.style.overflow = ''
     return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
+  const handleClose = () => {
+    setSuccess(false)
+    closeModal()
+  }
+
   if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-[#0C2140]/80" onClick={closeModal} />
+      <div className="absolute inset-0 bg-[#0C2140]/80" onClick={handleClose} />
       <div className="relative w-full max-w-[560px] p-5 shadow-xl" style={{ backgroundColor: '#DEE2E8' }}>
         <button
-          onClick={closeModal}
+          onClick={handleClose}
           className="absolute top-4 right-4 transition-colors cursor-pointer"
           style={{ color: '#9EA6B3' }}
         >

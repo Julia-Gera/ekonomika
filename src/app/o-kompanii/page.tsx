@@ -40,11 +40,13 @@ export default function OKompaniiPage() {
 
         {/* Полноширинное фото */}
         <div className="relative h-[520px] md:h-[739px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/9999_1140__11.png"
+          <Image
+            src="/images/about-hero.jpg"
             alt="Валентина Митрофанова"
-            className="absolute inset-0 w-full h-full object-cover [object-position:50%_20%] md:[object-position:center_15%]"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover [object-position:50%_20%] md:[object-position:center_15%]"
           />
 
           {/* Градиент — только десктоп */}
@@ -73,9 +75,8 @@ export default function OKompaniiPage() {
                   «Самое ценное — доверие тех, кто работает со мной»
                 </p>
               </div>
-              <div className="flex-1 pl-[16px] pr-[16px] pt-[11px]" style={{ backgroundImage: 'url(/images/Rectangle%20147.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/image 14.png" alt="Митрофанова и партнёры" height={46} className="w-auto" />
+              <div className="flex-1 pl-[16px] pr-[16px] pt-[11px]" style={{ backgroundImage: 'url(/images/about-founder-card.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <Image src="/images/image 14.png" alt="Митрофанова и партнёры" width={153} height={46} className="h-[46px] w-auto" />
                 <p className="text-white text-[14px] font-normal" style={{ maxWidth: 317, marginTop: 88, lineHeight: '16.8px' }}>
                   Валентина Митрофанова — основательница консалтинговой компании «Митрофанова и партнёры»,
                   эксперт с 20-летним опытом в управлении персоналом, производительностью труда и консалтинге.
@@ -112,18 +113,15 @@ export default function OKompaniiPage() {
           {/* Десктоп */}
           <div className="hidden md:flex gap-[12px] items-start">
             <div style={{ width: 378, height: 444, flexShrink: 0 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/Rectangle 149.png" alt="" className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
+              <Image src="/images/about-collage-left.jpg" alt="" width={378} height={444} className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
             </div>
             <div style={{ width: 770, height: 644, flexShrink: 0 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/Rectangle 150.png" alt="Валентина Митрофанова" className="w-full h-full object-cover" />
+              <Image src="/images/about-collage-right.jpg" alt="Валентина Митрофанова" width={777} height={657} className="w-full h-full object-cover" />
             </div>
           </div>
           {/* Мобиле */}
-          <div className="md:hidden" style={{ height: 300 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/Rectangle 150.png" alt="Валентина Митрофанова" className="w-full h-full object-cover" />
+          <div className="relative md:hidden" style={{ height: 300 }}>
+            <Image src="/images/about-collage-right.jpg" alt="Валентина Митрофанова" fill sizes="100vw" className="object-cover" />
           </div>
         </div>
       </div>
@@ -158,8 +156,7 @@ export default function OKompaniiPage() {
           <div className="hidden md:grid" style={{ gridTemplateColumns: '378px 1fr 383px' }}>
             {/* Фото */}
             <div style={{ paddingTop: 167 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/ЭкономикаТруда/Rectangle151.png" alt="Комплексный подход" style={{ width: '100%', display: 'block' }} />
+              <Image src="/images/about-approach.jpg" alt="Комплексный подход" width={378} height={316} style={{ width: '100%', display: 'block' }} />
             </div>
             {/* Декоративное пространство */}
             <div />
@@ -193,8 +190,7 @@ export default function OKompaniiPage() {
                 давая клиентам возможность заниматься бизнесом, не отвлекаясь на рутину
               </p>
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/ЭкономикаТруда/Rectangle151.png" alt="Комплексный подход" style={{ width: '100%', display: 'block' }} />
+            <Image src="/images/about-approach.jpg" alt="Комплексный подход" width={378} height={316} style={{ width: '100%', display: 'block' }} />
           </div>
 
         </div>

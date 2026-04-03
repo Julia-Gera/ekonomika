@@ -90,8 +90,7 @@ export default function DokumentyPage() {
                 style={{ height: 120, backgroundColor: '#ffffff', padding: 10, textDecoration: 'none' }}
               >
                 {/* Серый квадрат с иконкой */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={doc.icon} width={100} height={100} alt="" className="shrink-0" />
+                <Image src={doc.icon} width={100} height={100} alt="" className="shrink-0" />
 
                 {/* Контент */}
                 <div className="flex flex-col justify-between ml-[18px] flex-1 min-w-0" style={{ height: 100 }}>

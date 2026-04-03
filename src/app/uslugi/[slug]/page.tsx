@@ -154,7 +154,7 @@ export default async function ServicePage({ params }: Props) {
               <h2 className="text-[30px] font-normal text-[#0C2140] mb-[32px]">Статьи</h2>
               <div className="grid grid-cols-3 gap-px bg-[#CED3D9]">
                 {relatedArticles.map(a => (
-                  <ArticleCard key={a.id} date={a.date} category={a.category} title={a.title} href={`/stati/${a.slug}`} />
+                  <ArticleCard key={a.id} date={a.date} category={a.category} title={a.title} href={`/blog/${a.slug}`} />
                 ))}
               </div>
             </div>

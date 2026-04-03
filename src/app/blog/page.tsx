@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { getArticles } from '@/lib/api'
 
@@ -40,16 +41,19 @@ export default async function BlogPage() {
             {articles.map((article) => (
               <Link
                 key={article.id}
-                href={`/stati/${article.slug}`}
+                href={`/blog/${article.slug}`}
                 className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200 flex flex-col"
               >
                 {article.cover ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={article.cover}
-                    alt={article.title}
-                    className="h-48 w-full object-cover"
-                  />
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={article.cover}
+                      alt={article.title}
+                      fill
+                      sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
                 ) : (
                   <div className="h-48 bg-[#0C2140]/5 flex items-center justify-center">
                     <svg className="w-12 h-12 text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">

@@ -1,3 +1,5 @@
+import 'server-only'
+import { cache } from 'react'
 /**
  * Единый слой данных для статей и услуг.
  * Приоритет: Strapi CMS → placeholder-data (для разработки без CMS).
@@ -10,7 +12,7 @@ export type { Article, Service }
 
 // ─── Статьи ───────────────────────────────────────────────────────────────────
 
-export async function getArticles(limit = 10): Promise<Article[]> {
+export const getArticles = cache(async (limit = 10): Promise<Article[]> => {
   const items = await strapiGetArticles(limit)
   if (items.length > 0) return items
 
@@ -25,9 +27,9 @@ export async function getArticles(limit = 10): Promise<Article[]> {
     category: a.category,
     cover: null,
   }))
-}
+})
 
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
+export const getArticleBySlug = cache(async (slug: string): Promise<Article | null> => {
   const item = await strapiGetArticleBySlug(slug)
   if (item) return item
 
@@ -44,17 +46,17 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
     category: a.category,
     cover: null,
   }
-}
+})
 
-export async function getAllArticleSlugs(): Promise<string[]> {
+export const getAllArticleSlugs = cache(async (): Promise<string[]> => {
   const items = await strapiGetArticles(1000)
   if (items.length > 0) return items.map(a => a.slug)
   return placeholderArticles.map(a => a.slug)
-}
+})
 
 // ─── Услуги ───────────────────────────────────────────────────────────────────
 
-export async function getServices(limit = 20): Promise<Service[]> {
+export const getServices = cache(async (limit = 20): Promise<Service[]> => {
   const items = await strapiGetServices(limit)
   if (items.length > 0) return items
 
@@ -69,9 +71,9 @@ export async function getServices(limit = 20): Promise<Service[]> {
     price: s.price,
     icon: s.icon ?? null,
   }))
-}
+})
 
-export async function getServiceBySlug(slug: string): Promise<Service | null> {
+export const getServiceBySlug = cache(async (slug: string): Promise<Service | null> => {
   const item = await strapiGetServiceBySlug(slug)
   if (item) return item
 
@@ -88,4 +90,4 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
     price: s.price,
     icon: s.icon ?? null,
   }
-}
+})

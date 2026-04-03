@@ -1,6 +1,7 @@
 'use client'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Suspense, useState } from 'react'
+import { Suspense } from 'react'
 import ContactFormSection from '@/components/sections/ContactFormSection'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import { services, articles } from '@/lib/placeholder-data'
@@ -8,10 +9,9 @@ import { services, articles } from '@/lib/placeholder-data'
 function PoiskContent() {
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || ''
-  const [sortBy, setSortBy] = useState<'relevance' | 'date'>('relevance')
 
   const results = [
-    ...articles.map(a => ({ title: a.title, excerpt: a.excerpt, path: 'Главная  ›  Статьи', href: `/stati/${a.slug}` })),
+    ...articles.map(a => ({ title: a.title, excerpt: a.excerpt, path: 'Главная  ›  Статьи', href: `/blog/${a.slug}` })),
     ...services.map(s => ({ title: s.title, excerpt: s.description, path: 'Главная  ›  Услуги', href: `/uslugi/${s.slug}` })),
   ].filter(r => !query || r.title.toLowerCase().includes(query.toLowerCase()) || r.excerpt.toLowerCase().includes(query.toLowerCase()))
 
@@ -42,23 +42,18 @@ function PoiskContent() {
           {/* Results */}
           <div className="bg-white border border-[#e5e7eb] mb-8">
             {results.length > 0 ? results.map((r, i) => (
-              <a key={i} href={r.href} className="block p-6 border-b border-[#e5e7eb] last:border-b-0 hover:bg-gray-50 transition-colors">
+              <Link key={i} href={r.href} className="block border-b border-[#e5e7eb] p-6 transition-colors hover:bg-gray-50 last:border-b-0">
                 <h3 className="text-base font-semibold text-[#0C2140] mb-1">{highlightText(r.title, query)}</h3>
                 <p className="text-xs text-gray-400 mb-2">{r.path}</p>
                 <p className="text-sm text-gray-600 leading-relaxed">... {highlightText(r.excerpt, query)} ...</p>
-              </a>
+              </Link>
             )) : (
               <div className="p-12 text-center text-gray-400 text-sm">Ничего не найдено</div>
             )}
 
             {results.length > 0 && (
               <div className="px-6 py-4 flex items-center justify-between border-t border-[#e5e7eb]">
-                <p className="text-xs text-gray-500">
-                  Отсортировано по релевантности{' '}
-                  <button onClick={() => setSortBy('date')} className="underline hover:text-[#0C2140] transition-colors">
-                    | Сортировать по дате
-                  </button>
-                </p>
+                <p className="text-xs text-gray-500">Найдено результатов: {results.length}</p>
                 <button
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className="w-8 h-8 rounded-full bg-[#0C2140] flex items-center justify-center text-white hover:bg-[#304564] transition-colors"
@@ -79,7 +74,7 @@ function PoiskContent() {
 
 export default function PoiskPage() {
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <PoiskContent />
     </Suspense>
   )

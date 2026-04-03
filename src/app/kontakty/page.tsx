@@ -60,8 +60,7 @@ export default function KontaktyPage() {
                 {contacts.map((item, i) => (
                   <div key={i} className="flex items-center gap-[16px]">
                     {/* Белый квадрат с иконкой 52×52 */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item.icon} width={52} height={52} alt="" className="shrink-0" />
+                    <Image src={item.icon} width={52} height={52} alt="" className="shrink-0" />
 
                     {/* Текст */}
                     <div>
@@ -85,7 +84,9 @@ export default function KontaktyPage() {
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
+                  loading="lazy"
                   allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
                   title="Карта"
                 />
               </div>
