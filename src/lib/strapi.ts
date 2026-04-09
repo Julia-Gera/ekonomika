@@ -14,7 +14,19 @@ export interface Article {
   content: string        // rich-text / markdown из Strapi
   date: string           // отформатированная дата, напр. «2 марта 2026»
   category: string
+  topicSlug?: string | null
   cover?: string | null  // URL обложки
+}
+
+export interface ArticleTopic {
+  id: number
+  slug: string
+  title: string
+  description: string
+  lead: string
+  body: string
+  number: string
+  icon?: string | null
 }
 
 export interface Service {
@@ -35,6 +47,7 @@ interface StrapiMedia {
 
 interface StrapiArticleRecord {
   id: number
+  documentId?: string
   slug?: string
   title?: string
   excerpt?: string
@@ -42,6 +55,8 @@ interface StrapiArticleRecord {
   date?: string | null
   publishedAt?: string | null
   category?: string
+  topicSlug?: string | null
+  topic?: StrapiArticleTopicRecord | null
   cover?: StrapiMedia | null
 }
 
@@ -54,6 +69,17 @@ interface StrapiServiceRecord {
   number?: string
   order?: number
   price?: string
+  icon?: StrapiMedia | null
+}
+
+interface StrapiArticleTopicRecord {
+  id: number
+  slug?: string
+  title?: string
+  description?: string
+  lead?: string
+  body?: string
+  number?: string
   icon?: StrapiMedia | null
 }
 
@@ -114,6 +140,9 @@ function mapArticle(item: StrapiArticleRecord): Article {
   const cover = item.cover?.url
     ? getMediaUrl(item.cover)
     : null
+  const topicTitle = item.topic?.title?.trim()
+  const topicSlug = item.topic?.slug?.trim()
+
   return {
     id: item.id,
     slug: item.slug ?? '',
@@ -121,7 +150,8 @@ function mapArticle(item: StrapiArticleRecord): Article {
     excerpt: item.excerpt ?? '',
     content: item.content ?? '',
     date: item.date ? formatDate(item.date) : formatDate(item.publishedAt),
-    category: item.category ?? '',
+    category: topicTitle || (item.category ?? ''),
+    topicSlug: topicSlug || (item.topicSlug ?? null),
     cover,
   }
 }
@@ -141,13 +171,28 @@ function mapService(item: StrapiServiceRecord): Service {
   }
 }
 
+function mapArticleTopic(item: StrapiArticleTopicRecord): ArticleTopic {
+  const icon = item.icon?.url ? getMediaUrl(item.icon) : null
+
+  return {
+    id: item.id,
+    slug: item.slug ?? '',
+    title: item.title ?? '',
+    description: item.description ?? '',
+    lead: item.lead ?? '',
+    body: item.body ?? '',
+    number: item.number ?? '',
+    icon,
+  }
+}
+
 // ─── API функции ──────────────────────────────────────────────────────────────
 
 export async function getArticles(limit = 10, page = 1): Promise<Article[]> {
   const data = await fetchFromStrapi<StrapiCollectionResponse<StrapiArticleRecord>>(
     'articles',
     {
-      'populate': 'cover',
+      'populate': '*',
       'pagination[pageSize]': String(limit),
       'pagination[page]': String(page),
       'sort': 'date:desc',
@@ -176,6 +221,40 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   }
 
   return mapArticle(item)
+}
+
+export async function getArticleTopics(limit = 20): Promise<ArticleTopic[]> {
+  const data = await fetchFromStrapi<StrapiCollectionResponse<StrapiArticleTopicRecord>>(
+    'article-topics',
+    {
+      populate: 'icon',
+      'pagination[pageSize]': String(limit),
+      sort: 'number:asc',
+    }
+  )
+
+  if (!data?.data?.length) {
+    return []
+  }
+
+  return data.data.map(mapArticleTopic)
+}
+
+export async function getArticleTopicBySlug(slug: string): Promise<ArticleTopic | null> {
+  const data = await fetchFromStrapi<StrapiCollectionResponse<StrapiArticleTopicRecord>>(
+    'article-topics',
+    {
+      'filters[slug][$eq]': slug,
+      populate: '*',
+    }
+  )
+
+  const item = data?.data?.[0]
+  if (!item) {
+    return null
+  }
+
+  return mapArticleTopic(item)
 }
 
 export async function getServices(limit = 20): Promise<Service[]> {

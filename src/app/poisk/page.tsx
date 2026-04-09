@@ -4,14 +4,15 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import ContactFormSection from '@/components/sections/ContactFormSection'
 import Breadcrumb from '@/components/ui/Breadcrumb'
-import { services, articles } from '@/lib/placeholder-data'
+import { articleTopics, services, articles } from '@/lib/placeholder-data'
 
 function PoiskContent() {
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || ''
 
   const results = [
-    ...articles.map(a => ({ title: a.title, excerpt: a.excerpt, path: 'Главная  ›  Статьи', href: `/blog/${a.slug}` })),
+    ...articleTopics.map(topic => ({ title: topic.title, excerpt: topic.description, path: 'Главная', href: `/${topic.slug}` })),
+    ...articles.map(a => ({ title: a.title, excerpt: a.excerpt, path: `Главная  ›  ${articleTopics.find(topic => topic.slug === a.topicSlug)?.title ?? 'Статья'}`, href: a.topicSlug ? `/${a.topicSlug}/${a.slug}` : '/' })),
     ...services.map(s => ({ title: s.title, excerpt: s.description, path: 'Главная  ›  Услуги', href: `/uslugi/${s.slug}` })),
   ].filter(r => !query || r.title.toLowerCase().includes(query.toLowerCase()) || r.excerpt.toLowerCase().includes(query.toLowerCase()))
 

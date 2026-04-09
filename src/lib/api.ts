@@ -4,11 +4,11 @@ import { cache } from 'react'
  * Единый слой данных для статей и услуг.
  * Приоритет: Strapi CMS → placeholder-data (для разработки без CMS).
  */
-import { getArticles as strapiGetArticles, getArticleBySlug as strapiGetArticleBySlug, getServices as strapiGetServices, getServiceBySlug as strapiGetServiceBySlug } from './strapi'
-import { articles as placeholderArticles, services as placeholderServices } from './placeholder-data'
-import type { Article, Service } from './strapi'
+import { getArticles as strapiGetArticles, getArticleBySlug as strapiGetArticleBySlug, getArticleTopicBySlug as strapiGetArticleTopicBySlug, getArticleTopics as strapiGetArticleTopics, getServices as strapiGetServices, getServiceBySlug as strapiGetServiceBySlug } from './strapi'
+import { articleTopics as placeholderArticleTopics, articles as placeholderArticles, services as placeholderServices } from './placeholder-data'
+import type { Article, ArticleTopic, Service } from './strapi'
 
-export type { Article, Service }
+export type { Article, ArticleTopic, Service }
 
 // ─── Статьи ───────────────────────────────────────────────────────────────────
 
@@ -25,6 +25,7 @@ export const getArticles = cache(async (limit = 10): Promise<Article[]> => {
     content: '',
     date: a.date,
     category: a.category,
+    topicSlug: a.topicSlug,
     cover: null,
   }))
 })
@@ -44,6 +45,7 @@ export const getArticleBySlug = cache(async (slug: string): Promise<Article | nu
     content: '',
     date: a.date,
     category: a.category,
+    topicSlug: a.topicSlug,
     cover: null,
   }
 })
@@ -52,6 +54,41 @@ export const getAllArticleSlugs = cache(async (): Promise<string[]> => {
   const items = await strapiGetArticles(1000)
   if (items.length > 0) return items.map(a => a.slug)
   return placeholderArticles.map(a => a.slug)
+})
+
+export const getArticleTopics = cache(async (limit = 20): Promise<ArticleTopic[]> => {
+  const items = await strapiGetArticleTopics(limit)
+  if (items.length > 0) return items
+
+  return placeholderArticleTopics.slice(0, limit).map((topic) => ({
+    id: topic.id,
+    slug: topic.slug,
+    title: topic.title,
+    description: topic.description,
+    lead: topic.lead,
+    body: topic.body,
+    number: topic.number,
+    icon: topic.icon ?? null,
+  }))
+})
+
+export const getArticleTopicBySlug = cache(async (slug: string): Promise<ArticleTopic | null> => {
+  const item = await strapiGetArticleTopicBySlug(slug)
+  if (item) return item
+
+  const topic = placeholderArticleTopics.find((entry) => entry.slug === slug)
+  if (!topic) return null
+
+  return {
+    id: topic.id,
+    slug: topic.slug,
+    title: topic.title,
+    description: topic.description,
+    lead: topic.lead,
+    body: topic.body,
+    number: topic.number,
+    icon: topic.icon ?? null,
+  }
 })
 
 // ─── Услуги ───────────────────────────────────────────────────────────────────

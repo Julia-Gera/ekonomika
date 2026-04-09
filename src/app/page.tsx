@@ -1,18 +1,19 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import ServiceCard from '@/components/ui/ServiceCard'
 import ArticleCard from '@/components/ui/ArticleCard'
 import ContactFormSection from '@/components/sections/ContactFormSection'
 import SearchBar from '@/components/ui/SearchBar'
 import ConsultationButton from '@/components/ui/ConsultationButton'
-import { services } from '@/lib/placeholder-data'
-import { getArticles } from '@/lib/api'
+import { getArticles, getArticleTopics } from '@/lib/api'
 
 export default async function HomePage() {
   const articles = await getArticles(3)
+  const articleTopics = await getArticleTopics(20)
 
   return (
     <>
-      {/* ═══ HERO + СЕТКА УСЛУГ (единая секция с декоративным фоном) ═══ */}
+      {/* ═══ HERO + СЕТКА КАТЕГОРИЙ СТАТЕЙ ═══ */}
       <section className="bg-[#E7E9EC]">
         <div className="max-w-[1440px] mx-auto px-[20px] md:px-[140px] relative isolate overflow-hidden">
           {/* Декоративная иллюстрация: скрываем на мобиле */}
@@ -41,15 +42,15 @@ export default async function HomePage() {
             <ConsultationButton className="w-full rounded-none py-[14px] text-[14px]" />
           </div>
 
-          {/* Сетка услуг: 1 колонка на мобиле, 3 на десктопе */}
+          {/* Сетка категорий статей: 1 колонка на мобиле, 3 на десктопе */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-[10px]">
-            {services.map(s => (
+            {articleTopics.map((topic) => (
               <ServiceCard
-                key={s.id}
-                number={s.number}
-                title={s.title}
-                href={`/uslugi/${s.slug}`}
-                icon={s.icon}
+                key={topic.id}
+                number={topic.number}
+                title={topic.title}
+                href={`/${topic.slug}`}
+                icon={topic.icon ?? undefined}
               />
             ))}
           </div>
@@ -69,9 +70,17 @@ export default async function HomePage() {
                 date={a.date}
                 category={a.category}
                 title={a.title}
-                href={`/blog/${a.slug}`}
+                href={a.topicSlug ? `/${a.topicSlug}/${a.slug}` : '/'}
               />
             ))}
+          </div>
+          <div className="mt-[16px] md:mt-[20px] flex justify-end">
+            <Link
+              href="/stati"
+              className="inline-flex items-center text-[14px] md:text-[16px] font-normal text-[#556988] underline underline-offset-4 transition-colors hover:text-[#0C2140]"
+            >
+              <span>Все статьи</span>
+            </Link>
           </div>
         </div>
       </section>

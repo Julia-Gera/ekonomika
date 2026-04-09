@@ -28,20 +28,6 @@ if (strapiUrl) {
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.resolve(__dirname),
-  async redirects() {
-    return [
-      {
-        source: '/stati',
-        destination: '/blog',
-        permanent: true,
-      },
-      {
-        source: '/stati/:slug',
-        destination: '/blog/:slug',
-        permanent: true,
-      },
-    ]
-  },
   turbopack: {
     root: path.resolve(__dirname),
   },

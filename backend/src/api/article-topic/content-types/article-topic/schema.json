@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "services",
+  "collectionName": "article_topics",
   "info": {
-    "singularName": "service",
-    "pluralName": "services",
-    "displayName": "Услуга",
-    "description": "Услуги компании"
+    "singularName": "article-topic",
+    "pluralName": "article-topics",
+    "displayName": "Раздел статей",
+    "description": "Категории статей"
   },
   "options": {
     "draftAndPublish": true
@@ -24,18 +24,20 @@
     "description": {
       "type": "text"
     },
-    "content": {
-      "type": "richtext"
+    "lead": {
+      "type": "text"
+    },
+    "body": {
+      "type": "text"
     },
     "number": {
       "type": "string"
     },
-    "order": {
-      "type": "integer",
-      "default": 0
-    },
-    "price": {
-      "type": "string"
+    "articles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::article.article",
+      "mappedBy": "topic"
     },
     "icon": {
       "type": "media",

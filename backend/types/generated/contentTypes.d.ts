@@ -430,11 +430,48 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiArticleTopicArticleTopic
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'article_topics';
+  info: {
+    description: '\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u0441\u0442\u0430\u0442\u0435\u0439';
+    displayName: '\u0420\u0430\u0437\u0434\u0435\u043B \u0441\u0442\u0430\u0442\u0435\u0439';
+    pluralName: 'article-topics';
+    singularName: 'article-topic';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    articles: Schema.Attribute.Relation<'oneToMany', 'api::article.article'>;
+    body: Schema.Attribute.Text;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    icon: Schema.Attribute.Media<'images' | 'files'>;
+    lead: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::article-topic.article-topic'
+    > &
+      Schema.Attribute.Private;
+    number: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   collectionName: 'articles';
   info: {
     description: '\u0421\u0442\u0430\u0442\u044C\u0438 \u0438 \u043D\u043E\u0432\u043E\u0441\u0442\u0438';
-    displayName: 'Article';
+    displayName: '\u0421\u0442\u0430\u0442\u044C\u044F';
     pluralName: 'articles';
     singularName: 'article';
   };
@@ -459,6 +496,11 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    topic: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::article-topic.article-topic'
+    >;
+    topicSlug: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -469,7 +511,7 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
   collectionName: 'services';
   info: {
     description: '\u0423\u0441\u043B\u0443\u0433\u0438 \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0438';
-    displayName: 'Service';
+    displayName: '\u0423\u0441\u043B\u0443\u0433\u0430';
     pluralName: 'services';
     singularName: 'service';
   };
@@ -1012,6 +1054,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::article-topic.article-topic': ApiArticleTopicArticleTopic;
       'api::article.article': ApiArticleArticle;
       'api::service.service': ApiServiceService;
       'plugin::content-releases.release': PluginContentReleasesRelease;
