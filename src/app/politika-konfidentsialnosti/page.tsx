@@ -50,8 +50,8 @@ export default function PolitikaPage() {
           </h2>
           <p>
             По вопросам, связанным с обработкой персональных данных, обращайтесь по адресу:{' '}
-            <a href="mailto:info@ekonomika-truda.ru" className="text-[#3b82f6] hover:underline">
-              info@ekonomika-truda.ru
+            <a href="mailto:info@ekonomikatruda.ru" className="text-[#3b82f6] hover:underline">
+              info@ekonomikatruda.ru
             </a>
           </p>
         </div>

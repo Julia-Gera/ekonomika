@@ -17,7 +17,7 @@ export default function Footer() {
           <div className="w-[428px] shrink-0 flex flex-col gap-[8px]">
             <span className="text-[16px] font-normal text-white leading-[22px]">Адрес: г. Москва, ул. Арбат 12, стр. 1, подъезд 1, оф. 215</span>
             <span className="text-[16px] font-normal text-white leading-[22px]">Телефон: +7 (800) 350-51-32</span>
-            <span className="text-[16px] font-normal text-white leading-[22px]">Email: info@ekonomika-truda.ru</span>
+            <span className="text-[16px] font-normal text-white leading-[22px]">Email: info@ekonomikatruda.ru</span>
             <span className="text-[16px] font-normal text-white leading-[22px]">Telegram: @ekonomika_truda</span>
           </div>
           <div className="ml-[152px] shrink-0 flex flex-col gap-[8px]">
@@ -40,7 +40,7 @@ export default function Footer() {
           <div className="flex flex-col gap-[8px]">
             <span className="text-[14px] font-normal text-white leading-[20px]">Адрес: г. Москва, ул. Арбат 12, стр. 1, подъезд 1, оф. 215</span>
             <span className="text-[14px] font-normal text-white leading-[20px]">Телефон: +7 (800) 350-51-32</span>
-            <span className="text-[14px] font-normal text-white leading-[20px]">Email: info@ekonomika-truda.ru</span>
+            <span className="text-[14px] font-normal text-white leading-[20px]">Email: info@ekonomikatruda.ru</span>
             <span className="text-[14px] font-normal text-white leading-[20px]">Telegram: @ekonomika_truda</span>
           </div>
           <div className="flex flex-col gap-[8px]">

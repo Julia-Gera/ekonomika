@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a Next.js frontend for the `ekonomika-truda` project.
 
 ## Getting Started
 
-First, run the development server:
+1. Create local envs from the example:
+
+```bash
+cp .env.example .env.local
+```
+
+2. Fill the SMTP credentials for your Beget mailbox.
+
+3. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## SMTP form delivery
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The contact form posts to `/api/consultation` and sends mail through SMTP.
 
-## Learn More
+Recommended Beget settings:
 
-To learn more about Next.js, take a look at the following resources:
+- `SMTP_HOST=smtp.beget.com`
+- `SMTP_PORT=465`
+- `SMTP_SECURE=true`
+- `SMTP_USER=<full mailbox address>`
+- `SMTP_PASS=<mailbox password>`
+- `SMTP_FROM_EMAIL=<same mailbox address>`
+- `CONTACT_EMAIL=<where requests should arrive>`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+You can test locally once the mailbox is created in Beget and the SMTP credentials are valid.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+This frontend can run on a regular Node.js server with:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `npm ci`
+- `npm run build`
+- `npm run start`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For a Beget VPS deployment, place it behind `nginx` and run it with `pm2` together with the Strapi backend.
