@@ -42,17 +42,6 @@ function VkIcon() {
   )
 }
 
-function WhatsAppIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <path
-        d="M23.8023 13.7095C23.8058 18.9439 19.5622 23.1904 14.3289 23.1904H14.3254C12.6507 23.1898 11.0044 22.7465 9.55591 21.9058L4.19727 23.3114L5.63295 18.089C4.74894 16.587 4.28384 14.8779 4.28677 13.1385C4.29203 7.90462 8.5385 3.66113 13.7724 3.66113C16.3133 3.66218 18.6987 4.65247 20.4895 6.44753C22.2802 8.24259 23.8035 11.1686 23.8023 13.7095ZM14.3289 5.26263C9.97816 5.26263 6.44089 8.7999 6.43914 13.1507C6.43855 14.6626 6.86406 16.1382 7.66671 17.4141L7.96806 17.894L7.11972 20.9819L10.2904 20.1501L10.7534 20.4249C11.9802 21.1537 13.3875 21.5391 14.3254 21.5394H14.3289C18.6791 21.5394 22.2169 18.0016 22.2151 13.6512C22.2144 9.30049 18.678 5.26321 14.3289 5.26263ZM18.6662 15.8727C18.4285 15.7538 17.2621 15.1797 17.0443 15.1004C16.8265 15.0211 16.6681 14.9815 16.5094 15.2192C16.3508 15.4569 15.8955 15.9918 15.7568 16.1505C15.6181 16.3091 15.4794 16.3288 15.2417 16.2099C14.9961 16.0871 14.2048 15.8282 13.2664 14.9912C12.5362 14.3397 12.0432 13.5354 11.9045 13.2977C11.7658 13.06 11.8898 12.9314 12.0089 12.8131C12.1158 12.7068 12.2466 12.5357 12.3654 12.397C12.4843 12.2583 12.5238 12.1593 12.6032 12.0006C12.6825 11.8419 12.6428 11.7035 12.5835 11.5847C12.5241 11.4658 12.0489 10.2992 11.851 9.82379C11.6586 9.36114 11.4631 9.42426 11.3175 9.41695L10.9019 9.40994C10.7432 9.40994 10.4858 9.46937 10.2679 9.70708C10.05 9.94479 9.43652 10.5189 9.43652 11.6871C9.43652 12.8552 10.2876 13.9837 10.4064 14.1424C10.5253 14.3011 12.0831 16.7038 14.4679 17.7333C15.0341 17.9778 15.4764 18.1237 15.8211 18.233C16.3894 18.4138 16.9064 18.3883 17.3152 18.3273C17.7717 18.2591 18.7205 17.7539 18.9188 17.1994C19.117 16.6449 19.117 16.1702 19.0578 16.0714C18.9984 15.9723 18.9039 15.9518 18.6662 15.8727Z"
-        fill="currentColor"
-      />
-    </svg>
-  )
-}
-
 function PdfIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 40 40" fill="none" aria-hidden="true" className="shrink-0">
@@ -105,19 +94,16 @@ function PdfIcon() {
 export default function ArticleSharePanel({ title }: ArticleSharePanelProps) {
   const [copied, setCopied] = useState(false)
 
-  const getShareUrl = (network: 'telegram' | 'vk' | 'whatsapp') => {
+  const getShareUrl = (network: 'telegram' | 'vk') => {
     const currentUrl = window.location.href
     const encodedUrl = encodeURIComponent(currentUrl)
     const encodedTitle = encodeURIComponent(title)
-    const encodedMessage = encodeURIComponent(`${title} ${currentUrl}`)
 
     switch (network) {
       case 'telegram':
         return `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`
       case 'vk':
         return `https://vk.com/share.php?url=${encodedUrl}&title=${encodedTitle}`
-      case 'whatsapp':
-        return `https://wa.me/?text=${encodedMessage}`
     }
   }
 
@@ -137,7 +123,7 @@ export default function ArticleSharePanel({ title }: ArticleSharePanelProps) {
     }
   }
 
-  const handleShare = (network: 'telegram' | 'vk' | 'whatsapp') => {
+  const handleShare = (network: 'telegram' | 'vk') => {
     window.open(getShareUrl(network), '_blank', 'noopener,noreferrer')
   }
 
@@ -180,14 +166,6 @@ export default function ArticleSharePanel({ title }: ArticleSharePanelProps) {
               className="flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-full bg-black text-white transition-opacity hover:opacity-80"
             >
               <VkIcon />
-            </button>
-            <button
-              type="button"
-              onClick={() => handleShare('whatsapp')}
-              aria-label="Поделиться в WhatsApp"
-              className="flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-full bg-black text-white transition-opacity hover:opacity-80"
-            >
-              <WhatsAppIcon />
             </button>
           </div>
         </div>

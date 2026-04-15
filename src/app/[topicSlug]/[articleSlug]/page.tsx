@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await getArticleBySlug(articleSlug)
 
   if (!article) {
-    return { title: 'Статья не найдена' }
+    return { title: 'Новость не найдена' }
   }
 
   return {

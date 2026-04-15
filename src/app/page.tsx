@@ -79,7 +79,7 @@ export default async function HomePage() {
               href="/stati"
               className="inline-flex items-center text-[14px] md:text-[16px] font-normal text-[#556988] underline underline-offset-4 transition-colors hover:text-[#0C2140]"
             >
-              <span>Все статьи</span>
+              <span>Все новости</span>
             </Link>
           </div>
         </div>

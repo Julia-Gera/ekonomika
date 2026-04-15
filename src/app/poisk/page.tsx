@@ -1,18 +1,24 @@
 'use client'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
 import ContactFormSection from '@/components/sections/ContactFormSection'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import { articleTopics, services, articles } from '@/lib/placeholder-data'
 
 function PoiskContent() {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || ''
+  const [draftQuery, setDraftQuery] = useState(query)
+
+  useEffect(() => {
+    setDraftQuery(query)
+  }, [query])
 
   const results = [
     ...articleTopics.map(topic => ({ title: topic.title, excerpt: topic.description, path: 'Главная', href: `/${topic.slug}` })),
-    ...articles.map(a => ({ title: a.title, excerpt: a.excerpt, path: `Главная  ›  ${articleTopics.find(topic => topic.slug === a.topicSlug)?.title ?? 'Статья'}`, href: a.topicSlug ? `/${a.topicSlug}/${a.slug}` : '/' })),
+    ...articles.map(a => ({ title: a.title, excerpt: a.excerpt, path: `Главная  ›  ${articleTopics.find(topic => topic.slug === a.topicSlug)?.title ?? 'Новость'}`, href: a.topicSlug ? `/${a.topicSlug}/${a.slug}` : '/' })),
     ...services.map(s => ({ title: s.title, excerpt: s.description, path: 'Главная  ›  Услуги', href: `/uslugi/${s.slug}` })),
   ].filter(r => !query || r.title.toLowerCase().includes(query.toLowerCase()) || r.excerpt.toLowerCase().includes(query.toLowerCase()))
 
@@ -21,6 +27,19 @@ function PoiskContent() {
     const idx = text.toLowerCase().indexOf(q.toLowerCase())
     if (idx === -1) return <>{text}</>
     return <>{text.slice(0, idx)}<strong className="font-bold">{text.slice(idx, idx + q.length)}</strong>{text.slice(idx + q.length)}</>
+  }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const nextQuery = draftQuery.trim()
+
+    if (!nextQuery) {
+      router.push('/poisk')
+      return
+    }
+
+    router.push(`/poisk?q=${encodeURIComponent(nextQuery)}`)
   }
 
   return (
@@ -32,12 +51,18 @@ function PoiskContent() {
 
           {/* Search bar */}
           <div className="max-w-[520px] mx-auto mb-8">
-            <div className="flex items-center border border-[#e5e7eb] bg-white rounded px-4 py-2.5 gap-3">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
+            <form onSubmit={handleSubmit} className="flex items-center border border-[#e5e7eb] bg-white rounded px-4 py-2.5 gap-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" className="shrink-0">
                 <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
               </svg>
-              <span className="flex-1 text-sm text-gray-400">{query || 'Введите запрос'}</span>
-            </div>
+              <input
+                type="text"
+                value={draftQuery}
+                onChange={(event) => setDraftQuery(event.target.value)}
+                placeholder="Введите запрос"
+                className="flex-1 bg-transparent text-sm text-[#0C2140] placeholder:text-gray-400 outline-none"
+              />
+            </form>
           </div>
 
           {/* Results */}
