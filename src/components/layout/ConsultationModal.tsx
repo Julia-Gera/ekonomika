@@ -38,7 +38,7 @@ export default function ConsultationModal() {
         {success ? (
           <div className="py-12 text-center">
             <p className="text-[30px] font-normal text-[#0C2140] mb-3">Ваша заявка успешно отправлена</p>
-            <p className="text-[16px] font-normal text-[#6D7A8C]">С вами свяжутся в течении 15 минут</p>
+            <p className="text-[16px] font-normal text-[#6D7A8C]">С вами свяжутся в ближайшее время</p>
           </div>
         ) : (
           <>

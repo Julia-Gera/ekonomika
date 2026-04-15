@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "libphonenumber-js": "^1.12.41",
     "markdown-it": "^14.1.0",
     "next": "16.2.1",
     "nodemailer": "^6.10.1",
@@ -18,8 +19,8 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/markdown-it": "^14.1.2",
-    "@types/nodemailer": "^6.4.17",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

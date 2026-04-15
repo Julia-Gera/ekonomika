@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
+function validateEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+}
+
 function escapeHtml(value: string) {
   return value
     .replaceAll('&', '&amp;')
@@ -13,7 +17,11 @@ function escapeHtml(value: string) {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { name, phone, email, message, company } = body
+    const name = typeof body.name === 'string' ? body.name.trim() : ''
+    const phone = typeof body.phone === 'string' ? body.phone : ''
+    const email = typeof body.email === 'string' ? body.email.trim() : ''
+    const message = typeof body.message === 'string' ? body.message.trim() : ''
+    const company = typeof body.company === 'string' ? body.company.trim() : ''
     const smtpHost = process.env.SMTP_HOST
     const smtpPort = Number(process.env.SMTP_PORT ?? 465)
     const smtpSecure = (process.env.SMTP_SECURE ?? 'true') === 'true'
@@ -25,6 +33,22 @@ export async function POST(req: Request) {
 
     if (!name || !email || !phone) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
+    if (name.length < 2) {
+      return NextResponse.json({ error: 'Введите корректное ФИО.' }, { status: 400 })
+    }
+
+    if (!company || company.length < 2) {
+      return NextResponse.json({ error: 'Укажите компанию.' }, { status: 400 })
+    }
+
+    if (!validateEmail(email)) {
+      return NextResponse.json({ error: 'Введите корректный email.' }, { status: 400 })
+    }
+
+    if (!message || message.length < 10) {
+      return NextResponse.json({ error: 'Введите сообщение длиной не менее 10 символов.' }, { status: 400 })
     }
 
     if (!smtpHost || !smtpUser || !smtpPass || !contactEmail || !fromEmail) {

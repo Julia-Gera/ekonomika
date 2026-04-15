@@ -1,20 +1,188 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { AsYouType, isPossiblePhoneNumber, parseIncompletePhoneNumber } from 'libphonenumber-js'
 
 interface ContactFormProps {
   onSuccess?: () => void
+}
+
+type FormState = {
+  name: string
+  company: string
+  email: string
+  phone: string
+  message: string
+}
+
+type FormErrors = Partial<Record<keyof FormState, string>>
+
+const INITIAL_FORM: FormState = {
+  name: '',
+  company: '',
+  email: '',
+  phone: '',
+  message: '',
+}
+
+const MAX_INTERNATIONAL_PHONE_DIGITS = 15
+const MAX_RU_PHONE_DIGITS = 11
+const MAX_BY_PHONE_DIGITS = 12
+
+function formatPhoneInput(value: string) {
+  const sanitizedValue = parseIncompletePhoneNumber(value)
+
+  if (!sanitizedValue) {
+    return { displayValue: '', normalizedValue: '' }
+  }
+
+  if (sanitizedValue.startsWith('+')) {
+    const digitsOnly = sanitizedValue.slice(1).replace(/\D/g, '')
+
+    if (digitsOnly.startsWith('375')) {
+      const limitedDigits = digitsOnly.slice(0, MAX_BY_PHONE_DIGITS)
+      const belarusInput = `+${limitedDigits}`
+      const formatter = new AsYouType('BY')
+      const displayValue = formatter.input(belarusInput)
+      const normalizedValue = formatter.getNumberValue() ?? belarusInput
+
+      return { displayValue, normalizedValue }
+    }
+
+    if (digitsOnly.startsWith('7')) {
+      const limitedDigits = digitsOnly.slice(0, MAX_RU_PHONE_DIGITS)
+      const russianInput = `+${limitedDigits}`
+      const formatter = new AsYouType('RU')
+      const displayValue = formatter.input(russianInput)
+      const normalizedValue = formatter.getNumberValue() ?? russianInput
+
+      return { displayValue, normalizedValue }
+    }
+
+    const limitedDigits = digitsOnly.slice(0, MAX_INTERNATIONAL_PHONE_DIGITS)
+    const internationalInput = `+${limitedDigits}`
+    const formatter = new AsYouType()
+    const displayValue = formatter.input(internationalInput)
+    const normalizedValue = formatter.getNumberValue() ?? internationalInput
+
+    return { displayValue, normalizedValue }
+  }
+
+  const digitsOnly = sanitizedValue.replace(/\D/g, '').slice(0, MAX_RU_PHONE_DIGITS)
+
+  if (!digitsOnly) {
+    return { displayValue: '', normalizedValue: '' }
+  }
+
+  const normalizedRuValue =
+    digitsOnly.startsWith('8')
+      ? `+7${digitsOnly.slice(1)}`
+      : digitsOnly.startsWith('7')
+        ? `+${digitsOnly}`
+        : `+7${digitsOnly}`
+
+  const formatter = new AsYouType('RU')
+  const displayValue = formatter.input(normalizedRuValue)
+  const normalizedValue = formatter.getNumberValue() ?? normalizedRuValue
+
+  return { displayValue, normalizedValue }
+}
+
+function validateField(field: keyof FormState, value: string) {
+  const trimmedValue = value.trim()
+
+  switch (field) {
+    case 'name':
+      if (!trimmedValue) return 'Укажите ваше ФИО.'
+      if (trimmedValue.length < 2) return 'Введите не менее 2 символов.'
+      return ''
+    case 'company':
+      if (!trimmedValue) return 'Укажите компанию.'
+      if (trimmedValue.length < 2) return 'Введите не менее 2 символов.'
+      return ''
+    case 'email':
+      if (!trimmedValue) return 'Укажите email.'
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedValue)) return 'Введите корректный email.'
+      return ''
+    case 'phone':
+      if (!trimmedValue) return 'Укажите телефон.'
+      if (!trimmedValue.startsWith('+')) return 'Введите корректный номер телефона.'
+      if (!isPossiblePhoneNumber(trimmedValue)) return 'Введите корректный номер телефона.'
+      return ''
+    case 'message':
+      if (!trimmedValue) return 'Введите сообщение.'
+      if (trimmedValue.length < 10) return 'Введите не менее 10 символов.'
+      return ''
+    default:
+      return ''
+  }
+}
+
+function validateForm(form: FormState): FormErrors {
+  return {
+    name: validateField('name', form.name),
+    company: validateField('company', form.company),
+    email: validateField('email', form.email),
+    phone: validateField('phone', form.phone),
+    message: validateField('message', form.message),
+  }
 }
 
 export default function ContactForm({ onSuccess }: ContactFormProps) {
   const [agreed, setAgreed] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', message: '' })
+  const [form, setForm] = useState<FormState>(INITIAL_FORM)
+  const [phoneDisplay, setPhoneDisplay] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<FormErrors>({})
+
+  const setFieldValue = (field: keyof FormState, value: string) => {
+    setForm((currentForm) => ({ ...currentForm, [field]: value }))
+
+    if (fieldErrors[field]) {
+      setFieldErrors((currentErrors) => ({
+        ...currentErrors,
+        [field]: validateField(field, value),
+      }))
+    }
+  }
+
+  const handleFieldBlur = (field: keyof FormState) => {
+    setFieldErrors((currentErrors) => ({
+      ...currentErrors,
+      [field]: validateField(field, form[field]),
+    }))
+  }
+
+  const handlePhoneChange = (value: string) => {
+    const { displayValue, normalizedValue } = formatPhoneInput(value)
+
+    setPhoneDisplay(displayValue)
+    setForm((currentForm) => ({
+      ...currentForm,
+      phone: normalizedValue,
+    }))
+
+    if (fieldErrors.phone) {
+      setFieldErrors((currentErrors) => ({
+        ...currentErrors,
+        phone: validateField('phone', normalizedValue),
+      }))
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!agreed) return
+
+    const nextFieldErrors = validateForm(form)
+    const hasValidationErrors = Object.values(nextFieldErrors).some(Boolean)
+
+    setFieldErrors(nextFieldErrors)
+
+    if (hasValidationErrors) {
+      return
+    }
 
     setLoading(true)
     setError('')
@@ -23,18 +191,32 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       const response = await fetch('/api/consultation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          name: form.name.trim(),
+          company: form.company.trim(),
+          email: form.email.trim(),
+          message: form.message.trim(),
+        }),
       })
 
       if (!response.ok) {
-        throw new Error('Request failed')
+        const payload = await response.json().catch(() => null)
+        throw new Error(payload?.error ?? 'Request failed')
       }
 
       onSuccess?.()
-      setForm({ name: '', company: '', email: '', phone: '', message: '' })
+      setForm(INITIAL_FORM)
+      setPhoneDisplay('')
+      setFieldErrors({})
       setAgreed(false)
-    } catch {
-      setError('Не удалось отправить заявку. Попробуйте еще раз.')
+    } catch (requestError) {
+      const message =
+        requestError instanceof Error && requestError.message
+          ? requestError.message
+          : 'Не удалось отправить заявку. Попробуйте еще раз.'
+
+      setError(message)
     } finally {
       setLoading(false)
     }
@@ -44,7 +226,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
   const inputCls = [
     'w-full bg-white rounded px-[14px] h-[45px]',
     'text-[14px] font-normal text-[#0C2140] placeholder:text-[#6D7A8C]',
-    'focus:outline-none transition-colors',
+    'border border-transparent focus:outline-none transition-colors',
   ].join(' ')
 
   /* Figma: Cygre SemiBold 14px, #0c2140 */
@@ -56,13 +238,28 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
         <div>
           <label className={labelCls}>Ваше ФИО</label>
-          <input type="text" placeholder="Введите ваше ФИО*" required className={inputCls}
-            value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+          <input
+            type="text"
+            placeholder="Введите ваше ФИО*"
+            required
+            className={`${inputCls} ${fieldErrors.name ? 'border-[#b42318]' : 'focus:border-[#0C2140]'}`}
+            value={form.name}
+            onChange={(e) => setFieldValue('name', e.target.value)}
+            onBlur={() => handleFieldBlur('name')}
+          />
+          {fieldErrors.name && <p className="mt-[6px] text-[12px] text-[#b42318]">{fieldErrors.name}</p>}
         </div>
         <div>
           <label className={labelCls}>Компания</label>
-          <input type="text" placeholder="Компания" className={inputCls}
-            value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))} />
+          <input
+            type="text"
+            placeholder="Компания*"
+            className={`${inputCls} ${fieldErrors.company ? 'border-[#b42318]' : 'focus:border-[#0C2140]'}`}
+            value={form.company}
+            onChange={(e) => setFieldValue('company', e.target.value)}
+            onBlur={() => handleFieldBlur('company')}
+          />
+          {fieldErrors.company && <p className="mt-[6px] text-[12px] text-[#b42318]">{fieldErrors.company}</p>}
         </div>
       </div>
 
@@ -70,13 +267,31 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
         <div>
           <label className={labelCls}>Ваш Email</label>
-          <input type="email" placeholder="Email*" required className={inputCls}
-            value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+          <input
+            type="email"
+            placeholder="Email*"
+            required
+            className={`${inputCls} ${fieldErrors.email ? 'border-[#b42318]' : 'focus:border-[#0C2140]'}`}
+            value={form.email}
+            onChange={(e) => setFieldValue('email', e.target.value)}
+            onBlur={() => handleFieldBlur('email')}
+          />
+          {fieldErrors.email && <p className="mt-[6px] text-[12px] text-[#b42318]">{fieldErrors.email}</p>}
         </div>
         <div>
           <label className={labelCls}>Ваш телефон</label>
-          <input type="tel" placeholder="Телефон*" required className={inputCls}
-            value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
+          <input
+            type="tel"
+            placeholder="+7 (999) 123-45-67"
+            required
+            className={`${inputCls} ${fieldErrors.phone ? 'border-[#b42318]' : 'focus:border-[#0C2140]'}`}
+            value={phoneDisplay}
+            onChange={(e) => handlePhoneChange(e.target.value)}
+            onBlur={() => handleFieldBlur('phone')}
+            inputMode="tel"
+            autoComplete="tel"
+          />
+          {fieldErrors.phone && <p className="mt-[6px] text-[12px] text-[#b42318]">{fieldErrors.phone}</p>}
         </div>
       </div>
 
@@ -87,9 +302,14 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           className={[
             'w-full bg-white rounded px-[14px] py-[14px] h-[94px]',
             'text-[14px] font-normal text-[#0C2140] placeholder:text-[#6D7A8C]',
-            'focus:outline-none transition-colors resize-none',
+            'border border-transparent focus:outline-none transition-colors resize-none',
+            fieldErrors.message ? 'border-[#b42318]' : 'focus:border-[#0C2140]',
           ].join(' ')}
-          value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
+          value={form.message}
+          onChange={(e) => setFieldValue('message', e.target.value)}
+          onBlur={() => handleFieldBlur('message')}
+        />
+        {fieldErrors.message && <p className="mt-[6px] text-[12px] text-[#b42318]">{fieldErrors.message}</p>}
       </div>
 
       {/* Checkbox */}

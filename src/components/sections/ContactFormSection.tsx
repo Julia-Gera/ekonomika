@@ -17,7 +17,7 @@ export default function ContactFormSection() {
                   Ваша заявка успешно отправлена
                 </p>
                 <p className="text-[16px] font-normal text-[#6D7A8C] text-center">
-                  С вами свяжутся в течении 15 минут
+                  С вами свяжутся в ближайшее время
                 </p>
               </div>
             </div>
