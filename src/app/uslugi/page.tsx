@@ -2,11 +2,14 @@ import Image from 'next/image'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import ServiceCard from '@/components/ui/ServiceCard'
 import ContactFormSection from '@/components/sections/ContactFormSection'
-import { services } from '@/lib/placeholder-data'
+import { getServices } from '@/lib/api'
 
 export const metadata = { title: 'Услуги — Экономика труда' }
+export const dynamic = 'force-dynamic'
 
-export default function UslugiPage() {
+export default async function UslugiPage() {
+  const services = await getServices(100)
+
   return (
     <>
       <section className="bg-[#E7E9EC] overflow-hidden">
@@ -34,7 +37,7 @@ export default function UslugiPage() {
                 number={s.number}
                 title={s.title}
                 href={`/uslugi/${s.slug}`}
-                icon={s.icon}
+                icon={s.icon ?? undefined}
                 className="h-[144px]"
               />
             ))}

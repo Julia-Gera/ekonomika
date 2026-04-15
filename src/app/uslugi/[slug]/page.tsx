@@ -2,12 +2,14 @@ import Image from 'next/image'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import ContactFormSection from '@/components/sections/ContactFormSection'
 import ConsultationButton from '@/components/ui/ConsultationButton'
-import { services } from '@/lib/placeholder-data'
+import { getServiceBySlug } from '@/lib/api'
 import { notFound } from 'next/navigation'
 
 interface Props {
   params: Promise<{ slug: string }>
 }
+
+export const dynamic = 'force-dynamic'
 
 const auditTriggers = [
   'Показатели выполняются, но экономический результат не улучшается',
@@ -53,13 +55,9 @@ const auditColumns = [
   },
 ]
 
-export async function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }))
-}
-
 export default async function ServicePage({ params }: Props) {
   const { slug } = await params
-  const service = services.find((item) => item.slug === slug)
+  const service = await getServiceBySlug(slug)
 
   if (!service) {
     notFound()

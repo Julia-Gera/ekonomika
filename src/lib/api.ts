@@ -4,17 +4,20 @@ import { cache } from 'react'
  * Единый слой данных для статей и услуг.
  * Приоритет: Strapi CMS → placeholder-data (для разработки без CMS).
  */
+import { getStrapiUrl } from './site'
 import { getArticles as strapiGetArticles, getArticleBySlug as strapiGetArticleBySlug, getArticleTopicBySlug as strapiGetArticleTopicBySlug, getArticleTopics as strapiGetArticleTopics, getServices as strapiGetServices, getServiceBySlug as strapiGetServiceBySlug } from './strapi'
 import { articleTopics as placeholderArticleTopics, articles as placeholderArticles, services as placeholderServices } from './placeholder-data'
 import type { Article, ArticleTopic, Service } from './strapi'
 
 export type { Article, ArticleTopic, Service }
 
+const HAS_STRAPI = Boolean(getStrapiUrl())
+
 // ─── Статьи ───────────────────────────────────────────────────────────────────
 
 export const getArticles = cache(async (limit = 10): Promise<Article[]> => {
   const items = await strapiGetArticles(limit)
-  if (items.length > 0) return items
+  if (HAS_STRAPI) return items
 
   // fallback: placeholder-data
   return placeholderArticles.slice(0, limit).map(a => ({
@@ -32,7 +35,7 @@ export const getArticles = cache(async (limit = 10): Promise<Article[]> => {
 
 export const getArticleBySlug = cache(async (slug: string): Promise<Article | null> => {
   const item = await strapiGetArticleBySlug(slug)
-  if (item) return item
+  if (item || HAS_STRAPI) return item
 
   // fallback: placeholder-data
   const a = placeholderArticles.find(a => a.slug === slug)
@@ -52,13 +55,13 @@ export const getArticleBySlug = cache(async (slug: string): Promise<Article | nu
 
 export const getAllArticleSlugs = cache(async (): Promise<string[]> => {
   const items = await strapiGetArticles(1000)
-  if (items.length > 0) return items.map(a => a.slug)
+  if (HAS_STRAPI) return items.map(a => a.slug)
   return placeholderArticles.map(a => a.slug)
 })
 
 export const getArticleTopics = cache(async (limit = 20): Promise<ArticleTopic[]> => {
   const items = await strapiGetArticleTopics(limit)
-  if (items.length > 0) return items
+  if (HAS_STRAPI) return items
 
   return placeholderArticleTopics.slice(0, limit).map((topic) => ({
     id: topic.id,
@@ -74,7 +77,7 @@ export const getArticleTopics = cache(async (limit = 20): Promise<ArticleTopic[]
 
 export const getArticleTopicBySlug = cache(async (slug: string): Promise<ArticleTopic | null> => {
   const item = await strapiGetArticleTopicBySlug(slug)
-  if (item) return item
+  if (item || HAS_STRAPI) return item
 
   const topic = placeholderArticleTopics.find((entry) => entry.slug === slug)
   if (!topic) return null
@@ -95,7 +98,7 @@ export const getArticleTopicBySlug = cache(async (slug: string): Promise<Article
 
 export const getServices = cache(async (limit = 20): Promise<Service[]> => {
   const items = await strapiGetServices(limit)
-  if (items.length > 0) return items
+  if (HAS_STRAPI) return items
 
   return placeholderServices.map(s => ({
     id: s.id,
@@ -112,7 +115,7 @@ export const getServices = cache(async (limit = 20): Promise<Service[]> => {
 
 export const getServiceBySlug = cache(async (slug: string): Promise<Service | null> => {
   const item = await strapiGetServiceBySlug(slug)
-  if (item) return item
+  if (item || HAS_STRAPI) return item
 
   const s = placeholderServices.find(s => s.slug === slug)
   if (!s) return null
