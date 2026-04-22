@@ -28,6 +28,11 @@ const INITIAL_FORM: FormState = {
 const MAX_INTERNATIONAL_PHONE_DIGITS = 15
 const MAX_RU_PHONE_DIGITS = 11
 const MAX_BY_PHONE_DIGITS = 12
+const NAME_ALLOWED_PATTERN = /^[\p{L}\s-]+$/u
+
+function sanitizeNameInput(value: string) {
+  return value.replace(/[0-9]/g, '')
+}
 
 function formatPhoneInput(value: string) {
   const sanitizedValue = parseIncompletePhoneNumber(value)
@@ -95,9 +100,10 @@ function validateField(field: keyof FormState, value: string) {
     case 'name':
       if (!trimmedValue) return 'Укажите ваше ФИО.'
       if (trimmedValue.length < 2) return 'Введите не менее 2 символов.'
+      if (!NAME_ALLOWED_PATTERN.test(trimmedValue)) return 'ФИО может содержать только буквы, пробелы и дефис.'
       return ''
     case 'company':
-      if (!trimmedValue) return 'Укажите компанию.'
+      if (!trimmedValue) return ''
       if (trimmedValue.length < 2) return 'Введите не менее 2 символов.'
       return ''
     case 'email':
@@ -240,11 +246,11 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           <label className={labelCls}>Ваше ФИО</label>
           <input
             type="text"
-            placeholder="Введите ваше ФИО*"
+            placeholder="Введите ваше ФИО"
             required
             className={`${inputCls} ${fieldErrors.name ? 'border-[#b42318]' : 'focus:border-[#0C2140]'}`}
             value={form.name}
-            onChange={(e) => setFieldValue('name', e.target.value)}
+            onChange={(e) => setFieldValue('name', sanitizeNameInput(e.target.value))}
             onBlur={() => handleFieldBlur('name')}
           />
           {fieldErrors.name && <p className="mt-[6px] text-[12px] text-[#b42318]">{fieldErrors.name}</p>}
@@ -253,7 +259,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           <label className={labelCls}>Компания</label>
           <input
             type="text"
-            placeholder="Компания*"
+            placeholder="Компания"
             className={`${inputCls} ${fieldErrors.company ? 'border-[#b42318]' : 'focus:border-[#0C2140]'}`}
             value={form.company}
             onChange={(e) => setFieldValue('company', e.target.value)}
@@ -269,7 +275,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           <label className={labelCls}>Ваш Email</label>
           <input
             type="email"
-            placeholder="Email*"
+            placeholder="Email"
             required
             className={`${inputCls} ${fieldErrors.email ? 'border-[#b42318]' : 'focus:border-[#0C2140]'}`}
             value={form.email}

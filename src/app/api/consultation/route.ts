@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
+const NAME_ALLOWED_PATTERN = /^[\p{L}\s-]+$/u
+
 function validateEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 }
@@ -39,8 +41,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Введите корректное ФИО.' }, { status: 400 })
     }
 
-    if (!company || company.length < 2) {
-      return NextResponse.json({ error: 'Укажите компанию.' }, { status: 400 })
+    if (!NAME_ALLOWED_PATTERN.test(name)) {
+      return NextResponse.json({ error: 'ФИО может содержать только буквы, пробелы и дефис.' }, { status: 400 })
+    }
+
+    if (company && company.length < 2) {
+      return NextResponse.json({ error: 'Введите корректное название компании.' }, { status: 400 })
     }
 
     if (!validateEmail(email)) {

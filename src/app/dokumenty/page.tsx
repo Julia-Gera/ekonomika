@@ -5,27 +5,19 @@ import Breadcrumb from '@/components/ui/Breadcrumb'
 import ContactFormSection from '@/components/sections/ContactFormSection'
 
 const tabs = [
-  { label: 'Шаблоны',      key: 'templates' },
-  { label: 'Чек - листы',  key: 'checklists' },
-  { label: 'Документация', key: 'docs' },
+  { label: 'Чек-листы', key: 'checklists' },
 ]
 
 const documents = [
-  // Шаблоны
-  { id: 1,  icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Консультации по трудовому праву в режиме абонентского сопровождения', tab: 'templates', file: '/documents/shablon-konsultacii-trudovoe-pravo.pdf' },
-  { id: 2,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Разовые консультации по трудовому праву', tab: 'templates', file: '/documents/shablon-razovye-konsultacii.pdf' },
-  { id: 3,  icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Трудовой договор (шаблон)', tab: 'templates', file: '/documents/shablon-trudovoy-dogovor.pdf' },
-  { id: 4,  icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Положение об оплате труда', tab: 'templates', file: '/documents/shablon-polozhenie-ob-oplate.pdf' },
-  { id: 5,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Должностная инструкция (шаблон)', tab: 'templates', file: '/documents/shablon-dolzhnostnaya-instrukciya.pdf' },
-  // Чек-листы
-  { id: 6,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Чек-лист по самоаудиту кадровых документов', tab: 'checklists', file: '/documents/chek-list-samoaudit.pdf' },
-  { id: 7,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Чек-лист по охране труда', tab: 'checklists', file: '/documents/chek-list-oxrana-truda.pdf' },
-  { id: 8,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Чек-лист: кадровый аудит компании', tab: 'checklists', file: '/documents/chek-list-kadrovyy-audit.pdf' },
-  { id: 9,  icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Чек-лист по трудовым спорам', tab: 'checklists', file: '/documents/chek-list-trudovye-spory.pdf' },
-  // Документация
-  { id: 10, icon: '/images/doc-icon-2.svg', type: 'PDF', typeBg: '#FF0004', title: 'Регламент о защите персональных данных', tab: 'docs', file: '/documents/dok-reglament-personalnye-dannye.pdf' },
-  { id: 11, icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Правила внутреннего трудового распорядка', tab: 'docs', file: '/documents/dok-pravila-vnutrennego-rasporyadka.pdf' },
-  { id: 12, icon: '/images/doc-icon-1.svg', type: 'DOC', typeBg: '#207AE2', title: 'Положение о заработной плате', tab: 'docs', file: '/documents/dok-polozhenie-o-zarabotnoy-plate.pdf' },
+  {
+    id: 1,
+    icon: '/images/doc-icon-1.svg',
+    type: 'DOC',
+    typeBg: '#207AE2',
+    title: 'Чек-лист. Проверка системы ЭТ',
+    tab: 'checklists',
+    file: '/documents/Чек-лист. Проверка системы ЭТ.docx',
+  },
 ]
 
 const RedirectIcon = () => (
@@ -35,7 +27,7 @@ const RedirectIcon = () => (
 )
 
 export default function DokumentyPage() {
-  const [activeTab, setActiveTab] = useState('templates')
+  const [activeTab, setActiveTab] = useState('checklists')
 
   const filtered = documents.filter(d => d.tab === activeTab)
 
