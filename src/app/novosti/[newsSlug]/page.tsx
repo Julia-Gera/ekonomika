@@ -4,83 +4,77 @@ import Breadcrumb from '@/components/ui/Breadcrumb'
 import ArticleCard from '@/components/ui/ArticleCard'
 import ArticleSharePanel from '@/components/ui/ArticleSharePanel'
 import ContactFormSection from '@/components/sections/ContactFormSection'
-import { getArticleBySlug, getArticles, getArticleTopicBySlug } from '@/lib/api'
+import { getNews, getNewsBySlug } from '@/lib/api'
 import { renderRichTextContent } from '@/lib/markdown'
 import { notFound } from 'next/navigation'
 
 interface Props {
-  params: Promise<{ topicSlug: string; articleSlug: string }>
+  params: Promise<{ newsSlug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { articleSlug } = await params
-  const article = await getArticleBySlug(articleSlug)
+  const { newsSlug } = await params
+  const newsItem = await getNewsBySlug(newsSlug)
 
-  if (!article) {
+  if (!newsItem) {
     return { title: 'Новость не найдена' }
   }
 
   return {
-    title: article.title,
-    description: article.excerpt,
+    title: newsItem.title,
+    description: newsItem.excerpt,
   }
 }
 
 export async function generateStaticParams() {
-  const articles = await getArticles(1000)
+  const news = await getNews(1000)
 
-  return articles
-    .filter((item) => item.topicSlug)
-    .map((item) => ({
-      topicSlug: item.topicSlug,
-      articleSlug: item.slug,
-    }))
+  return news.map((newsItem) => ({
+    newsSlug: newsItem.slug,
+  }))
 }
 
-export default async function ArticlePage({ params }: Props) {
-  const { topicSlug, articleSlug } = await params
-  const article = await getArticleBySlug(articleSlug)
+export default async function NewsItemPage({ params }: Props) {
+  const { newsSlug } = await params
+  const newsItem = await getNewsBySlug(newsSlug)
 
-  if (!article || article.topicSlug !== topicSlug) {
+  if (!newsItem) {
     notFound()
   }
 
-  const topic = article.topicSlug
-    ? await getArticleTopicBySlug(article.topicSlug)
-    : null
-  const allArticles = await getArticles(50)
-  const related = allArticles
-    .filter((item) => item.topicSlug === article.topicSlug && item.slug !== articleSlug)
+  const allNews = await getNews(50)
+  const related = allNews
+    .filter((item) => item.slug !== newsSlug)
     .slice(0, 3)
-  const articleHtml = article.content ? renderRichTextContent(article.content) : ''
+  const newsHtml = newsItem.content ? renderRichTextContent(newsItem.content) : ''
 
   return (
     <>
       <div className="bg-[#E7E9EC]">
         <div className="max-w-[1260px] mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-12">
           <Breadcrumb items={[
-            ...(topic ? [{ label: topic.title, href: `/${topic.slug}` }] : []),
-            { label: article.title },
+            { label: 'Новости', href: '/novosti' },
+            { label: newsItem.title },
           ]} />
 
           <h1 className="mt-[18px] max-w-[1050px] text-[34px] font-normal leading-[1.02] tracking-[-0.04em] text-[#0C2140] md:text-[58px]">
-            {article.title}
+            {newsItem.title}
           </h1>
 
           <div className="mb-[46px] mt-[26px] flex flex-wrap items-center gap-4 md:gap-7">
-            <span className="text-[16px] font-normal leading-none text-[#0C2140] md:text-[18px]">{article.date}</span>
-            {article.category && (
+            <span className="text-[16px] font-normal leading-none text-[#0C2140] md:text-[18px]">{newsItem.date}</span>
+            {newsItem.badge && (
               <span className="rounded-full bg-white/65 px-5 py-[8px] text-[13px] font-normal leading-none text-[#556988] shadow-[inset_0_0_0_1px_rgba(158,166,179,0.08)] backdrop-blur-[2px]">
-                {article.category}
+                {newsItem.badge}
               </span>
             )}
           </div>
 
-          {article.cover && (
+          {newsItem.cover && (
             <div className="relative mb-12 aspect-[12/5] w-full overflow-hidden rounded-[4px]">
               <Image
-                src={article.cover}
-                alt={article.title}
+                src={newsItem.cover}
+                alt={newsItem.title}
                 fill
                 sizes="(min-width: 1200px) 1200px, 100vw"
                 className="object-cover"
@@ -89,17 +83,17 @@ export default async function ArticlePage({ params }: Props) {
           )}
 
           <div className="article-body-shell max-w-[620px]">
-            {articleHtml ? (
+            {newsHtml ? (
               <div
                 className="article-content text-[#0C2140]"
-                dangerouslySetInnerHTML={{ __html: articleHtml }}
+                dangerouslySetInnerHTML={{ __html: newsHtml }}
               />
             ) : (
-              <p className="text-gray-600 text-lg leading-relaxed">{article.excerpt}</p>
+              <p className="text-gray-600 text-lg leading-relaxed">{newsItem.excerpt}</p>
             )}
           </div>
 
-          <ArticleSharePanel title={article.title} />
+          <ArticleSharePanel title={newsItem.title} />
 
           {related.length > 0 && (
             <div className="print:hidden">
@@ -107,13 +101,13 @@ export default async function ArticlePage({ params }: Props) {
                 Читайте также
               </h2>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-[12px]">
-                {related.map((relatedArticle) => (
+                {related.map((relatedNews) => (
                   <ArticleCard
-                    key={relatedArticle.id}
-                    date={relatedArticle.date}
-                    badge={relatedArticle.category}
-                    title={relatedArticle.title}
-                    href={relatedArticle.topicSlug ? `/${relatedArticle.topicSlug}/${relatedArticle.slug}` : '/stati'}
+                    key={relatedNews.id}
+                    date={relatedNews.date}
+                    badge={relatedNews.badge}
+                    title={relatedNews.title}
+                    href={`/novosti/${relatedNews.slug}`}
                   />
                 ))}
               </div>

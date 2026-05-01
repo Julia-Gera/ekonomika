@@ -19,6 +19,13 @@ interface SearchArticle {
   topicSlug?: string | null
 }
 
+interface SearchNews {
+  slug: string
+  title: string
+  excerpt: string
+  badge?: string
+}
+
 interface SearchService {
   slug: string
   title: string
@@ -27,12 +34,14 @@ interface SearchService {
 
 interface SearchPageClientProps {
   articleTopics: SearchArticleTopic[]
+  news: SearchNews[]
   articles: SearchArticle[]
   services: SearchService[]
 }
 
 export default function SearchPageClient({
   articleTopics,
+  news,
   articles,
   services,
 }: SearchPageClientProps) {
@@ -52,11 +61,17 @@ export default function SearchPageClient({
       path: 'Главная',
       href: `/${topic.slug}`,
     })),
+    ...news.map((item) => ({
+      title: item.title,
+      excerpt: item.excerpt,
+      path: `Главная  ›  Новости${item.badge ? `  ›  ${item.badge}` : ''}`,
+      href: `/novosti/${item.slug}`,
+    })),
     ...articles.map((article) => ({
       title: article.title,
       excerpt: article.excerpt,
-      path: `Главная  ›  ${articleTopics.find((topic) => topic.slug === article.topicSlug)?.title ?? 'Новость'}`,
-      href: article.topicSlug ? `/${article.topicSlug}/${article.slug}` : '/',
+      path: `Главная  ›  Статьи  ›  ${articleTopics.find((topic) => topic.slug === article.topicSlug)?.title ?? 'Без категории'}`,
+      href: article.topicSlug ? `/${article.topicSlug}/${article.slug}` : '/stati',
     })),
     ...services.map((service) => ({
       title: service.title,

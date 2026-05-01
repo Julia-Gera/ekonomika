@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "articles",
+  "collectionName": "news",
   "info": {
-    "singularName": "article",
-    "pluralName": "articles",
-    "displayName": "Статья",
-    "description": "Статьи с привязкой к разделу"
+    "singularName": "news-item",
+    "pluralName": "news",
+    "displayName": "Новость",
+    "description": "Новости со свободным бейджем"
   },
   "options": {
     "draftAndPublish": true
@@ -30,11 +30,8 @@
     "date": {
       "type": "date"
     },
-    "topic": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::article-topic.article-topic",
-      "inversedBy": "articles"
+    "badge": {
+      "type": "string"
     },
     "cover": {
       "type": "media",

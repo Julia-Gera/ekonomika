@@ -7,6 +7,7 @@ const navLinks = [
   { href: '/', label: 'Главная' },
   { href: '/o-kompanii', label: 'О компании' },
   { href: '/uslugi', label: 'Услуги' },
+  { href: '/novosti', label: 'Новости' },
   { href: '/dokumenty', label: 'Документы' },
   { href: '/kontakty', label: 'Контакты' },
 ]

@@ -14,12 +14,12 @@ const RedirectIcon = ({ className = '' }: { className?: string }) => (
 
 interface ArticleCardProps {
   date: string
-  category: string
+  badge: string
   title: string
   href: string
 }
 
-export default function ArticleCard({ date, category, title, href }: ArticleCardProps) {
+export default function ArticleCard({ date, badge, title, href }: ArticleCardProps) {
   return (
     <Link
       href={href}
@@ -32,9 +32,9 @@ export default function ArticleCard({ date, category, title, href }: ArticleCard
         <ArticleIcon className="text-[#9EA6B3] transition-colors group-hover:text-white" />
       </div>
 
-      {category && (
+      {badge && (
         <span className="mb-[8px] inline-block self-start rounded-full bg-[#E7E9EC] px-4 py-2 text-[12px] font-normal leading-[14px] text-[#0C2140] transition-colors group-hover:bg-[#6D7A8C] group-hover:text-white">
-          {category}
+          {badge}
         </span>
       )}
 

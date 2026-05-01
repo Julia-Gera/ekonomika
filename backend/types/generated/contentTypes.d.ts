@@ -470,7 +470,7 @@ export interface ApiArticleTopicArticleTopic
 export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   collectionName: 'articles';
   info: {
-    description: '\u0421\u0442\u0430\u0442\u044C\u0438 \u0438 \u043D\u043E\u0432\u043E\u0441\u0442\u0438';
+    description: '\u0421\u0442\u0430\u0442\u044C\u0438 \u0441 \u043F\u0440\u0438\u0432\u044F\u0437\u043A\u043E\u0439 \u043A \u0440\u0430\u0437\u0434\u0435\u043B\u0443';
     displayName: '\u0421\u0442\u0430\u0442\u044C\u044F';
     pluralName: 'articles';
     singularName: 'article';
@@ -479,7 +479,6 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    category: Schema.Attribute.String;
     content: Schema.Attribute.RichText;
     cover: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;
@@ -500,7 +499,41 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::article-topic.article-topic'
     >;
-    topicSlug: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiNewsItemNewsItem extends Struct.CollectionTypeSchema {
+  collectionName: 'news';
+  info: {
+    description: '\u041D\u043E\u0432\u043E\u0441\u0442\u0438 \u0441\u043E \u0441\u0432\u043E\u0431\u043E\u0434\u043D\u044B\u043C \u0431\u0435\u0439\u0434\u0436\u0435\u043C';
+    displayName: '\u041D\u043E\u0432\u043E\u0441\u0442\u044C';
+    pluralName: 'news';
+    singularName: 'news-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    badge: Schema.Attribute.String;
+    content: Schema.Attribute.RichText;
+    cover: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date: Schema.Attribute.Date;
+    excerpt: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::news-item.news-item'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -533,6 +566,7 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     number: Schema.Attribute.String;
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    pageContent: Schema.Attribute.JSON;
     price: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
@@ -1056,6 +1090,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::article-topic.article-topic': ApiArticleTopicArticleTopic;
       'api::article.article': ApiArticleArticle;
+      'api::news-item.news-item': ApiNewsItemNewsItem;
       'api::service.service': ApiServiceService;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

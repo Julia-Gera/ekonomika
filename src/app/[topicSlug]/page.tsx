@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${topic.title} — новости по теме`,
+    title: `${topic.title} — статьи по теме`,
     description: topic.description,
   }
 }
@@ -50,8 +50,8 @@ export default async function TopicPage({ params, searchParams }: Props) {
 
   const allArticles = await getArticles(1000)
   const relatedArticles = allArticles.length > 0
-    ? allArticles.filter((article) => article.topicSlug === topic.slug)
-    : articles.filter((article) => article.topicSlug === topic.slug)
+    ? allArticles.filter((item) => item.topicSlug === topic.slug)
+    : articles.filter((item) => item.topicSlug === topic.slug)
   const resolvedSearchParams: { page?: string | string[] | undefined } =
     await (searchParams ?? Promise.resolve({ page: undefined }))
   const rawPage = Array.isArray(resolvedSearchParams.page)
@@ -135,19 +135,19 @@ export default async function TopicPage({ params, searchParams }: Props) {
 
           <div className="mt-[32px] md:mt-[40px]">
             <h2 className="text-[24px] md:text-[30px] font-normal text-[#0C2140] mb-[20px] md:mb-[32px]">
-              Новости
+              Статьи
             </h2>
 
             {relatedArticles.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[10px] md:gap-[12px]">
-                  {paginatedArticles.map((article) => (
+                  {paginatedArticles.map((item) => (
                     <ArticleCard
-                      key={article.id}
-                      date={article.date}
-                      category={article.category}
-                      title={article.title}
-                      href={`/${topic.slug}/${article.slug}`}
+                      key={item.id}
+                      date={item.date}
+                      badge={item.category}
+                      title={item.title}
+                      href={`/${topic.slug}/${item.slug}`}
                     />
                   ))}
                 </div>
@@ -178,7 +178,7 @@ export default async function TopicPage({ params, searchParams }: Props) {
             ) : (
               <div className="bg-white p-[24px] md:p-[32px]">
                 <p className="text-[18px] md:text-[20px] font-normal text-[#0C2140]">
-                  Новости по этой теме скоро появятся.
+                  Статьи по этой теме скоро появятся.
                 </p>
                 <p className="mt-[10px] text-[14px] md:text-[16px] leading-[1.55] text-[#6D7A8C] max-w-[640px]">
                   Мы уже подготовили структуру раздела. Когда материалы будут добавлены, они автоматически появятся в этой подборке.

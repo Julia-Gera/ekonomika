@@ -5,10 +5,10 @@ import ArticleCard from '@/components/ui/ArticleCard'
 import ContactFormSection from '@/components/sections/ContactFormSection'
 import SearchBar from '@/components/ui/SearchBar'
 import ConsultationButton from '@/components/ui/ConsultationButton'
-import { getArticles, getArticleTopics } from '@/lib/api'
+import { getArticleTopics, getNews } from '@/lib/api'
 
 export default async function HomePage() {
-  const articles = await getArticles(3)
+  const news = await getNews(3)
   const articleTopics = await getArticleTopics(20)
 
   return (
@@ -64,19 +64,19 @@ export default async function HomePage() {
             Последние новости
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-[10px]">
-            {articles.map(a => (
+            {news.map((item) => (
               <ArticleCard
-                key={a.id}
-                date={a.date}
-                category={a.category}
-                title={a.title}
-                href={a.topicSlug ? `/${a.topicSlug}/${a.slug}` : '/'}
+                key={item.id}
+                date={item.date}
+                badge={item.badge}
+                title={item.title}
+                href={`/novosti/${item.slug}`}
               />
             ))}
           </div>
           <div className="mt-[16px] md:mt-[20px] flex justify-end">
             <Link
-              href="/stati"
+              href="/novosti"
               className="inline-flex items-center text-[14px] md:text-[16px] font-normal text-[#556988] underline underline-offset-4 transition-colors hover:text-[#0C2140]"
             >
               <span>Все новости</span>
