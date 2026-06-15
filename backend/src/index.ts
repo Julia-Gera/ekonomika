@@ -4,7 +4,7 @@ export default {
   register(/* { strapi }: { strapi: Core.Strapi } */) {},
 
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
-    // Открываем публичный доступ (find + findOne) для articles, news, article-topics и services
+    // Открываем публичный доступ (find + findOne) для контента сайта
     const publicRole = await strapi
       .query('plugin::users-permissions.role')
       .findOne({ where: { type: 'public' } })
@@ -20,6 +20,8 @@ export default {
       'api::article-topic.article-topic.findOne',
       'api::service.service.find',
       'api::service.service.findOne',
+      'api::video.video.find',
+      'api::video.video.findOne',
     ]
 
     for (const action of permissionsToEnable) {

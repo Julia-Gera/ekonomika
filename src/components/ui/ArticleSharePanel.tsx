@@ -132,7 +132,7 @@ export default function ArticleSharePanel({ title }: ArticleSharePanelProps) {
   }
 
   return (
-    <section className="mt-[56px] w-full max-w-[527px] print:hidden">
+    <section className="mt-[56px] w-full max-w-[1024px] print:hidden">
       <h2 className="text-[20px] font-normal leading-[120%] tracking-[-0.5px] text-[#0C2140]">
         Поделиться материалом
       </h2>

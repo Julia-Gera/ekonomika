@@ -5,11 +5,13 @@ import { cache } from 'react'
  * Приоритет: Strapi CMS → placeholder-data (для разработки без CMS).
  */
 import { getStrapiUrl } from './site'
-import { getArticles as strapiGetArticles, getArticleBySlug as strapiGetArticleBySlug, getArticleTopicBySlug as strapiGetArticleTopicBySlug, getArticleTopics as strapiGetArticleTopics, getNews as strapiGetNews, getNewsBySlug as strapiGetNewsBySlug, getServices as strapiGetServices, getServiceBySlug as strapiGetServiceBySlug } from './strapi'
-import { articleTopics as placeholderArticleTopics, articles as placeholderArticles, news as placeholderNews, services as placeholderServices } from './placeholder-data'
+import { getArticles as strapiGetArticles, getArticleBySlug as strapiGetArticleBySlug, getArticleTopicBySlug as strapiGetArticleTopicBySlug, getArticleTopics as strapiGetArticleTopics, getNews as strapiGetNews, getNewsBySlug as strapiGetNewsBySlug, getServices as strapiGetServices, getServiceBySlug as strapiGetServiceBySlug, getVideos as strapiGetVideos } from './strapi'
+import { articleTopics as placeholderArticleTopics, articles as placeholderArticles, news as placeholderNews, services as placeholderServices, videos as placeholderVideos } from './placeholder-data'
+import { getVideoEmbedUrl, getVideoLinks, getYouTubeThumbnail } from './video'
 import type { Article, ArticleTopic, News, Service } from './strapi'
+import type { VideoEpisode } from './video'
 
-export type { Article, ArticleTopic, News, Service }
+export type { Article, ArticleTopic, News, Service, VideoEpisode }
 
 const HAS_STRAPI = Boolean(getStrapiUrl())
 
@@ -93,6 +95,9 @@ export const getNews = cache(async (limit = 10): Promise<News[]> => {
     date: item.date,
     badge: item.badge,
     cover: null,
+    sideImage: null,
+    sideImageWidth: null,
+    sideImageHeight: null,
   }))
 })
 
@@ -112,6 +117,9 @@ export const getNewsBySlug = cache(async (slug: string): Promise<News | null> =>
     date: newsItem.date,
     badge: newsItem.badge,
     cover: null,
+    sideImage: null,
+    sideImageWidth: null,
+    sideImageHeight: null,
   }
 })
 
@@ -119,6 +127,34 @@ export const getAllNewsSlugs = cache(async (): Promise<string[]> => {
   const items = await strapiGetNews(1000)
   if (HAS_STRAPI) return items.map((item) => item.slug)
   return placeholderNews.map((item) => item.slug)
+})
+
+// ─── Видео и подкасты ───────────────────────────────────────────────────────
+
+export const getVideos = cache(async (limit = 10): Promise<VideoEpisode[]> => {
+  const items = await strapiGetVideos(limit)
+  if (HAS_STRAPI) return items
+
+  return placeholderVideos.slice(0, limit).map((item) => {
+    const youtubeUrl = item.youtubeUrl ?? null
+    const rutubeUrl = item.rutubeUrl ?? null
+
+    return {
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      youtubeUrl,
+      rutubeUrl,
+      previewUrl: null,
+      thumbnailUrl: getYouTubeThumbnail(youtubeUrl),
+      embedUrl: getVideoEmbedUrl(youtubeUrl, rutubeUrl),
+      date: item.date,
+      datePublished: item.datePublished,
+      tag: item.tag,
+      order: item.order,
+      platformLinks: getVideoLinks(youtubeUrl, rutubeUrl),
+    }
+  })
 })
 
 export const getArticleTopics = cache(async (limit = 20): Promise<ArticleTopic[]> => {

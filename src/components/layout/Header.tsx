@@ -10,6 +10,7 @@ const navLinks = [
   { href: '/o-kompanii', label: 'О компании' },
   { href: '/uslugi', label: 'Услуги' },
   { href: '/novosti', label: 'Новости' },
+  { href: '/video-i-podkasty', label: 'Видео' },
   { href: '/dokumenty', label: 'Документы' },
   { href: '/kontakty', label: 'Контакты' },
 ]

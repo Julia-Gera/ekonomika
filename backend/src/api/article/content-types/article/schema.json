@@ -25,7 +25,11 @@
       "type": "text"
     },
     "content": {
-      "type": "richtext"
+      "type": "richtext",
+      "options": {
+        "preset": "defaultMarkdown"
+      },
+      "customField": "plugin::ckeditor5.CKEditor"
     },
     "date": {
       "type": "date"

@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "videos",
+  "info": {
+    "singularName": "video",
+    "pluralName": "videos",
+    "displayName": "Видео",
+    "description": "Видео и подкасты с внешними ссылками на YouTube и Rutube"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "youtubeUrl": {
+      "type": "string"
+    },
+    "rutubeUrl": {
+      "type": "string"
+    },
+    "previewUrl": {
+      "type": "string"
+    },
+    "tag": {
+      "type": "string"
+    },
+    "date": {
+      "type": "date"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

@@ -441,6 +441,42 @@ export const news = [
   },
 ]
 
+export const videos = [
+  {
+    id: 1,
+    title: 'КПЭ вместо KPI: правовые риски и мифы об эффективности',
+    description: 'Разбираем, почему КПЭ в трудовых договорах может стать юридической миной и как компании получают миллионные иски.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=ysz5S6PUM-U',
+    rutubeUrl: null,
+    date: '9 апреля 2026',
+    datePublished: '2026-04-09',
+    tag: 'Режимы, СУРВ',
+    order: 1,
+  },
+  {
+    id: 2,
+    title: 'Изменения в премировании 2025-2026',
+    description: 'Что важно проверить в документах о премировании и как снизить риск трудовых споров.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+    rutubeUrl: null,
+    date: '26 марта 2026',
+    datePublished: '2026-03-26',
+    tag: 'Оплата, ФОТ',
+    order: 2,
+  },
+  {
+    id: 3,
+    title: 'Как не попасть под иск за систему KPI',
+    description: 'Разбираем типовые ошибки при внедрении KPI и юридически устойчивую настройку показателей.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
+    rutubeUrl: null,
+    date: '12 марта 2026',
+    datePublished: '2026-03-12',
+    tag: 'Анти KPI',
+    order: 3,
+  },
+]
+
 export const documents = [
   { id: 1, title: 'Консультации по трудовому праву в режиме абонентского сопровождения', type: 'DOC', category: 'templates' },
   { id: 2, title: 'Разовые консультации по трудовому праву', type: 'PDF', category: 'templates' },

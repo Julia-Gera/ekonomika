@@ -37,9 +37,14 @@ body {
   isolation: isolate;
 }
 
-.article-body-shell::before,
-.article-body-shell::after {
+.article-body-shell::before {
   display: none;
+}
+
+.article-body-shell::after {
+  content: "";
+  display: block;
+  clear: both;
 }
 
 .article-content {
@@ -47,12 +52,12 @@ body {
 }
 
 .article-content > * {
-  width: min(100%, 35rem);
+  width: 100%;
   margin: 0;
 }
 
 .article-content > * + * {
-  margin-top: 1.4rem;
+  margin-top: 1.45rem;
 }
 
 .article-content h1,
@@ -63,8 +68,8 @@ body {
 .article-content h6 {
   color: #0C2140;
   font-weight: 400;
-  line-height: 1.18;
-  letter-spacing: -0.04em;
+  line-height: 1.16;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
@@ -74,32 +79,35 @@ body {
 }
 
 .article-content h2 {
-  width: min(100%, 39rem);
-  font-size: 1.5rem;
+  font-size: 1.85rem;
 }
 
 .article-content h3 {
-  width: min(100%, 37rem);
-  font-size: 1.32rem;
+  font-size: 1.48rem;
 }
 
 .article-content h4,
 .article-content h5,
 .article-content h6 {
-  width: min(100%, 35rem);
-  font-size: 1.14rem;
+  font-size: 1.18rem;
 }
 
 .article-content p,
 .article-content li {
   color: #0C2140;
-  font-size: 1rem;
-  line-height: 1.5;
-  letter-spacing: -0.02em;
+  font-size: 1.0625rem;
+  line-height: 1.66;
+  letter-spacing: -0.01em;
+}
+
+.article-content > p:first-child {
+  color: #304564;
+  font-size: 1.22rem;
+  line-height: 1.55;
 }
 
 .article-content p + p {
-  margin-top: 1.1rem;
+  margin-top: 1.15rem;
 }
 
 .article-content p + h2,
@@ -126,10 +134,12 @@ body {
 
 .article-content blockquote {
   position: relative;
-  margin: 3rem 0;
-  width: min(100%, 35rem);
-  padding: 1.55rem 1.7rem 1.55rem 3.55rem;
+  margin: 3.1rem 0;
+  padding: 1.7rem 2rem 1.7rem 3.8rem;
+  border-left: 4px solid #9EB2D0;
+  border-radius: 4px;
   background: #FFFFFF;
+  box-shadow: 0 18px 40px rgba(12, 33, 64, 0.06);
 }
 
 .article-content blockquote::before {
@@ -144,19 +154,19 @@ body {
 
 .article-content blockquote p {
   color: #0C2140;
-  font-size: 0.95rem;
-  line-height: 1.38;
-  letter-spacing: -0.02em;
+  font-size: 1.08rem;
+  line-height: 1.52;
+  letter-spacing: -0.01em;
 }
 
 .article-content ul,
 .article-content ol {
-  margin: 1.5rem 0;
-  padding-left: 1.5rem;
+  margin: 1.65rem 0;
+  padding-left: 1.7rem;
 }
 
 .article-content li + li {
-  margin-top: 0.55rem;
+  margin-top: 0.72rem;
 }
 
 .article-content ul {
@@ -201,7 +211,6 @@ body {
 
 .article-content pre {
   overflow-x: auto;
-  width: min(100%, 35rem);
   padding: 1rem 1.125rem;
   background: #0C2140;
   color: #FFFFFF;
@@ -213,6 +222,41 @@ body {
   color: inherit;
 }
 
+.article-content .article-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  background: #FFFFFF;
+  box-shadow: 0 12px 32px rgba(12, 33, 64, 0.05);
+}
+
+.article-content table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.article-content th,
+.article-content td {
+  min-width: 9rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #CED3D9;
+  color: #0C2140;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  text-align: left;
+  vertical-align: top;
+}
+
+.article-content th {
+  background: #DCE5F0;
+  font-weight: 700;
+}
+
+.article-content tbody tr:nth-child(even) td {
+  background: #F4F6F8;
+}
+
 .article-content h2 + figure,
 .article-content h3 + figure,
 .article-content h4 + figure {
@@ -220,8 +264,8 @@ body {
 }
 
 .article-content figure {
-  width: min(100%, 35rem);
   overflow: hidden;
+  border-radius: 4px;
   background: #D9D9D9;
   aspect-ratio: 1.64 / 1;
 }
@@ -250,19 +294,16 @@ body {
   }
 
   .article-content h2 {
-    width: 100%;
-    font-size: 1.34rem;
+    font-size: 1.38rem;
   }
 
   .article-content h3 {
-    width: 100%;
     font-size: 1.2rem;
   }
 
   .article-content h4,
   .article-content h5,
   .article-content h6 {
-    width: 100%;
     font-size: 1.08rem;
   }
 
@@ -291,16 +332,28 @@ body {
   .article-content p,
   .article-content li {
     font-size: 0.98rem;
-    line-height: 1.5;
+    line-height: 1.58;
+  }
+
+  .article-content > p:first-child {
+    font-size: 1.08rem;
+    line-height: 1.52;
   }
 
   .article-content blockquote {
-    padding: 1.3rem 1.15rem 1.3rem 3rem;
+    padding: 1.35rem 1.25rem 1.35rem 3rem;
   }
 
   .article-content blockquote::before {
     top: 0.85rem;
     left: 0.85rem;
     font-size: 3rem;
+  }
+
+  .article-content th,
+  .article-content td {
+    min-width: 8rem;
+    padding: 0.75rem 0.8rem;
+    font-size: 0.92rem;
   }
 }

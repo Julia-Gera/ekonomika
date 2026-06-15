@@ -1,5 +1,7 @@
 import 'server-only'
 import { getStrapiUrl } from './site'
+import { getVideoEmbedUrl, getVideoLinks, getYouTubeThumbnail } from './video'
+import type { VideoEpisode } from './video'
 
 const STRAPI_URL = getStrapiUrl()
 const STRAPI_TIMEOUT_MS = Number(process.env.STRAPI_TIMEOUT_MS ?? 2500)
@@ -27,6 +29,9 @@ export interface News {
   date: string
   badge: string
   cover?: string | null
+  sideImage?: string | null
+  sideImageWidth?: number | null
+  sideImageHeight?: number | null
 }
 
 export interface ArticleTopic {
@@ -74,6 +79,8 @@ export interface ServicePageTable {
 
 interface StrapiMedia {
   url?: string | null
+  width?: number | null
+  height?: number | null
 }
 
 interface StrapiArticleRecord {
@@ -100,6 +107,21 @@ interface StrapiNewsRecord {
   publishedAt?: string | null
   badge?: string
   cover?: StrapiMedia | null
+  sideImage?: StrapiMedia | null
+}
+
+interface StrapiVideoRecord {
+  id: number
+  documentId?: string
+  title?: string
+  description?: string
+  youtubeUrl?: string | null
+  rutubeUrl?: string | null
+  previewUrl?: string | null
+  tag?: string
+  date?: string | null
+  order?: number
+  publishedAt?: string | null
 }
 
 interface StrapiServiceRecord {
@@ -203,6 +225,9 @@ function mapNews(item: StrapiNewsRecord): News {
   const cover = item.cover?.url
     ? getMediaUrl(item.cover)
     : null
+  const sideImage = item.sideImage?.url
+    ? getMediaUrl(item.sideImage)
+    : null
 
   return {
     id: item.id,
@@ -213,6 +238,32 @@ function mapNews(item: StrapiNewsRecord): News {
     date: item.date ? formatDate(item.date) : formatDate(item.publishedAt),
     badge: item.badge ?? '',
     cover,
+    sideImage,
+    sideImageWidth: item.sideImage?.width ?? null,
+    sideImageHeight: item.sideImage?.height ?? null,
+  }
+}
+
+function mapVideo(item: StrapiVideoRecord): VideoEpisode {
+  const youtubeUrl = item.youtubeUrl?.trim() || null
+  const rutubeUrl = item.rutubeUrl?.trim() || null
+  const previewUrl = item.previewUrl?.trim() || null
+  const thumbnailUrl = previewUrl ?? getYouTubeThumbnail(youtubeUrl)
+
+  return {
+    id: item.id,
+    title: item.title?.trim() ?? '',
+    description: item.description?.trim() ?? '',
+    youtubeUrl,
+    rutubeUrl,
+    previewUrl,
+    thumbnailUrl,
+    embedUrl: getVideoEmbedUrl(youtubeUrl, rutubeUrl),
+    date: item.date ? formatDate(item.date) : formatDate(item.publishedAt),
+    datePublished: item.date ?? item.publishedAt ?? null,
+    tag: item.tag?.trim() ?? '',
+    order: item.order ?? 0,
+    platformLinks: getVideoLinks(youtubeUrl, rutubeUrl),
   }
 }
 
@@ -317,6 +368,25 @@ export async function getNewsBySlug(slug: string): Promise<News | null> {
   }
 
   return mapNews(item)
+}
+
+export async function getVideos(limit = 10, page = 1): Promise<VideoEpisode[]> {
+  const data = await fetchFromStrapi<StrapiCollectionResponse<StrapiVideoRecord>>(
+    'videos',
+    {
+      'pagination[pageSize]': String(limit),
+      'pagination[page]': String(page),
+      'sort[0]': 'order:asc',
+      'sort[1]': 'date:desc',
+      'sort[2]': 'publishedAt:desc',
+    }
+  )
+
+  if (!data?.data?.length) {
+    return []
+  }
+
+  return data.data.map(mapVideo)
 }
 
 export async function getArticleTopics(limit = 20): Promise<ArticleTopic[]> {

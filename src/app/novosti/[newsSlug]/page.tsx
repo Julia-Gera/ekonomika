@@ -47,6 +47,9 @@ export default async function NewsItemPage({ params }: Props) {
     .filter((item) => item.slug !== newsSlug)
     .slice(0, 3)
   const newsHtml = newsItem.content ? renderRichTextContent(newsItem.content) : ''
+  const sideImageRatio = newsItem.sideImageWidth && newsItem.sideImageHeight
+    ? `${newsItem.sideImageWidth} / ${newsItem.sideImageHeight}`
+    : '4 / 5'
 
   return (
     <>
@@ -82,7 +85,23 @@ export default async function NewsItemPage({ params }: Props) {
             </div>
           )}
 
-          <div className="article-body-shell max-w-[620px]">
+          <div className={`article-body-shell ${newsItem.sideImage ? 'max-w-[1260px]' : 'max-w-[1024px]'}`}>
+            {newsItem.sideImage && (
+              <aside
+                className="relative mb-8 w-full overflow-hidden rounded-[4px] bg-[#D9D9D9] md:float-right md:mb-8 md:ml-12 md:w-[420px] lg:w-[460px]"
+                style={{ aspectRatio: sideImageRatio }}
+              >
+                <Image
+                  src={newsItem.sideImage}
+                  alt={newsItem.title}
+                  fill
+                  unoptimized
+                  sizes="(min-width: 1024px) 460px, (min-width: 768px) 420px, 100vw"
+                  className="object-contain"
+                />
+              </aside>
+            )}
+
             {newsHtml ? (
               <div
                 className="article-content text-[#0C2140]"

@@ -88,7 +88,7 @@ export default async function ArticlePage({ params }: Props) {
             </div>
           )}
 
-          <div className="article-body-shell max-w-[620px]">
+          <div className="article-body-shell max-w-[1024px]">
             {articleHtml ? (
               <div
                 className="article-content text-[#0C2140]"
