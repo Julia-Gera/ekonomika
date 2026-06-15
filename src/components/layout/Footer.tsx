@@ -28,9 +28,13 @@ export default function Footer() {
             ))}
           </div>
           <div className="ml-auto w-[228px] shrink-0 flex flex-col gap-[8px]">
-            <Link href="/politika-konfidentsialnosti" className="text-[16px] font-normal text-white leading-[19px] hover:text-[#9EA6B3] transition-colors">
+            <a
+              href="/documents/politika-konfidentsialnosti.pdf"
+              download="politika-konfidentsialnosti.pdf"
+              className="text-[16px] font-normal text-white leading-[19px] hover:text-[#9EA6B3] transition-colors"
+            >
               Политика конфиденциальности
-            </Link>
+            </a>
             <span className="text-[16px] font-normal text-[#9EA6B3] leading-[19px]">Все права защищены</span>
           </div>
         </div>
@@ -51,9 +55,13 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex flex-col gap-[4px]">
-            <Link href="/politika-konfidentsialnosti" className="text-[14px] font-normal text-white leading-[19px] hover:text-[#9EA6B3] transition-colors">
+            <a
+              href="/documents/politika-konfidentsialnosti.pdf"
+              download="politika-konfidentsialnosti.pdf"
+              className="text-[14px] font-normal text-white leading-[19px] hover:text-[#9EA6B3] transition-colors"
+            >
               Политика конфиденциальности
-            </Link>
+            </a>
             <span className="text-[14px] font-normal text-[#9EA6B3] leading-[19px]">Все права защищены</span>
           </div>
         </div>

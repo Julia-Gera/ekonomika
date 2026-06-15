@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react'
-import Link from 'next/link'
 import { AsYouType, isPossiblePhoneNumber, parseIncompletePhoneNumber } from 'libphonenumber-js'
 
 interface ContactFormProps {
@@ -336,13 +335,14 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
         </div>
         <span className="text-[14px] font-normal text-[#6D7A8C]">
           Я согласен на обработку{' '}
-          <Link
-            href="/politika-konfidentsialnosti"
+          <a
+            href="/documents/politika-konfidentsialnosti.pdf"
+            download="politika-konfidentsialnosti.pdf"
             className="underline hover:text-[#0C2140] transition-colors"
             onClick={e => e.stopPropagation()}
           >
             персональных данных
-          </Link>
+          </a>
         </span>
       </div>
 
