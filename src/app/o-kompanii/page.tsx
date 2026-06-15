@@ -45,6 +45,7 @@ export default function OKompaniiPage() {
             alt="Валентина Митрофанова"
             fill
             priority
+            unoptimized
             sizes="100vw"
             className="object-cover [object-position:50%_20%] md:[object-position:center_15%]"
           />
@@ -113,15 +114,15 @@ export default function OKompaniiPage() {
           {/* Десктоп */}
           <div className="hidden md:flex gap-[12px] items-start">
             <div style={{ width: 378, height: 444, flexShrink: 0 }}>
-              <Image src="/images/about-collage-left.jpg" alt="" width={378} height={444} className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
+              <Image src="/images/about-collage-left-figma.png" alt="" width={378} height={444} unoptimized className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
             </div>
             <div style={{ width: 770, height: 644, flexShrink: 0 }}>
-              <Image src="/images/about-collage-right.jpg" alt="Валентина Митрофанова" width={777} height={657} className="w-full h-full object-cover" />
+              <Image src="/images/about-collage-right-figma.png" alt="Валентина Митрофанова" width={777} height={657} unoptimized className="w-full h-full object-cover" />
             </div>
           </div>
           {/* Мобиле */}
           <div className="relative md:hidden" style={{ height: 300 }}>
-            <Image src="/images/about-collage-right.jpg" alt="Валентина Митрофанова" fill sizes="100vw" className="object-cover" />
+            <Image src="/images/about-collage-right-figma.png" alt="Валентина Митрофанова" fill unoptimized sizes="100vw" className="object-cover" />
           </div>
         </div>
       </div>
