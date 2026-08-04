@@ -230,20 +230,24 @@ body {
 }
 
 .article-content table {
-  width: max-content;
-  min-width: 100%;
+  width: 100%;
+  max-width: 100%;
+  table-layout: auto;
   border-collapse: collapse;
   border-spacing: 0;
 }
 
 .article-content th,
 .article-content td {
-  min-width: 9rem;
+  min-width: 0;
   padding: 0.9rem 1rem;
   border: 1px solid #CED3D9;
   color: #0C2140;
   font-size: 0.98rem;
   line-height: 1.45;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
   text-align: left;
   vertical-align: top;
 }
@@ -352,7 +356,6 @@ body {
 
   .article-content th,
   .article-content td {
-    min-width: 8rem;
     padding: 0.75rem 0.8rem;
     font-size: 0.92rem;
   }
