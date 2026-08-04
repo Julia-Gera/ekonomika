@@ -245,16 +245,21 @@ body {
   color: #0C2140;
   font-size: 0.98rem;
   line-height: 1.45;
-  overflow-wrap: anywhere;
-  word-break: normal;
   white-space: normal;
   text-align: left;
   vertical-align: top;
 }
 
+.article-content td {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
 .article-content th {
   background: #DCE5F0;
   font-weight: 700;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .article-content tbody tr:nth-child(even) td {
