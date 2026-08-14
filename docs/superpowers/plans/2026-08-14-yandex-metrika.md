@@ -24,7 +24,8 @@
 - Create `src/components/analytics/yandex-metrika.ts`: номер счётчика, тип `window.ym`, построение исходного сниппета и чистые функции для SPA-просмотров.
 - Create `src/components/analytics/YandexMetrikaNavigation.tsx`: наблюдение за клиентской навигацией.
 - Create `src/components/analytics/YandexMetrika.tsx`: глобальный `Script`, `noscript` и `Suspense`-граница.
-- Create `tests/yandex-metrika.test.mjs`: unit-тесты сниппета, initial/duplicate guard, вызова `hit` и wiring корневого layout.
+- Create `tests/yandex-metrika.test.mjs`: unit-тесты сниппета, initial/duplicate guard и вызова `hit`.
+- Create `tests/yandex-metrika.integration.mjs`: проверка реального HTML, отданного Next.js dev server.
 - Modify `src/app/layout.tsx`: одно глобальное подключение `YandexMetrika`.
 - Modify `package.json`: команда `npm test` на встроенном Node test runner.
 
@@ -199,30 +200,65 @@ git commit -m "feat: add Yandex Metrika tracking core"
 ### Task 2: Компоненты и глобальное подключение
 
 **Files:**
-- Modify: `tests/yandex-metrika.test.mjs`
+- Create: `tests/yandex-metrika.integration.mjs`
 - Create: `src/components/analytics/YandexMetrikaNavigation.tsx`
 - Create: `src/components/analytics/YandexMetrika.tsx`
 - Modify: `src/app/layout.tsx`
+- Modify: `package.json`
 
 **Interfaces:**
 - Consumes: `YANDEX_METRIKA_ID`, `buildYandexMetrikaScript`, `createNavigationPageView`, `sendYandexMetrikaPageView` из Task 1.
 - Produces: default-компоненты `YandexMetrikaNavigation(): null` и `YandexMetrika(): ReactElement`.
 
-- [ ] **Step 1: Добавить падающий wiring-тест**
+- [ ] **Step 1: Добавить падающий интеграционный тест**
 
-Добавить в `tests/yandex-metrika.test.mjs` импорт и тест:
+В `package.json` добавить команду:
+
+```json
+"test:integration": "node --test tests/yandex-metrika.integration.mjs"
+```
+
+Создать `tests/yandex-metrika.integration.mjs`:
 
 ```js
-import { readFile } from 'node:fs/promises'
+import assert from 'node:assert/strict'
+import { spawn } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
+import test from 'node:test'
 
-test('mounts Yandex Metrika exactly once in the root layout', async () => {
-  const layout = await readFile(
-    new URL('../src/app/layout.tsx', import.meta.url),
-    'utf8',
+const projectDirectory = fileURLToPath(new URL('..', import.meta.url))
+const port = 33157
+const pageUrl = `http://127.0.0.1:${port}`
+
+async function readHomePage() {
+  for (let attempt = 0; attempt < 100; attempt += 1) {
+    try {
+      const response = await fetch(pageUrl)
+      if (response.ok) return response.text()
+    } catch {
+      // The dev server is still starting.
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 200))
+  }
+
+  throw new Error('Next.js dev server did not become ready')
+}
+
+test('serves Yandex Metrika on every page from the root layout', { timeout: 30000 }, async (t) => {
+  const server = spawn(
+    process.execPath,
+    ['node_modules/next/dist/bin/next', 'dev', '--hostname', '127.0.0.1', '--port', String(port)],
+    { cwd: projectDirectory, stdio: 'ignore' },
   )
 
-  assert.match(layout, /import YandexMetrika from ['"]@\/components\/analytics\/YandexMetrika['"]/)
-  assert.equal(layout.match(/<YandexMetrika\s*\/>/g)?.length, 1)
+  t.after(() => server.kill('SIGTERM'))
+
+  const html = await readHomePage()
+
+  assert.match(html, /id="yandex-metrika"/)
+  assert.match(html, /tag\.js\?id=111598594/)
+  assert.match(html, /mc\.yandex\.ru\/watch\/111598594/)
 })
 ```
 
@@ -230,7 +266,9 @@ test('mounts Yandex Metrika exactly once in the root layout', async () => {
 
 Run: `npm test`
 
-Expected: FAIL в тесте `mounts Yandex Metrika exactly once in the root layout`.
+Run: `npm run test:integration`
+
+Expected: FAIL в тесте `serves Yandex Metrika on every page from the root layout`, потому что исходный HTML ещё не содержит счётчик.
 
 - [ ] **Step 3: Реализовать наблюдатель навигации**
 
@@ -325,7 +363,11 @@ import YandexMetrika from '@/components/analytics/YandexMetrika'
 
 Run: `npm test`
 
-Expected: 5 tests PASS.
+Expected: 4 tests PASS.
+
+Run: `npm run test:integration`
+
+Expected: 1 integration test PASS.
 
 Run: `npm run lint`
 
@@ -334,7 +376,7 @@ Expected: exit 0 без новых ошибок.
 - [ ] **Step 7: Зафиксировать компоненты**
 
 ```bash
-git add tests/yandex-metrika.test.mjs src/components/analytics/YandexMetrikaNavigation.tsx src/components/analytics/YandexMetrika.tsx src/app/layout.tsx
+git add package.json tests/yandex-metrika.integration.mjs src/components/analytics/YandexMetrikaNavigation.tsx src/components/analytics/YandexMetrika.tsx src/app/layout.tsx
 git commit -m "feat: integrate Yandex Metrika"
 ```
 
@@ -351,7 +393,11 @@ git commit -m "feat: integrate Yandex Metrika"
 
 Run: `npm test`
 
-Expected: 5 tests PASS.
+Expected: 4 tests PASS.
+
+Run: `npm run test:integration`
+
+Expected: 1 integration test PASS.
 
 Run: `npm run lint`
 
@@ -391,7 +437,7 @@ Expected: сервер отвечает на `http://localhost:3000`.
 Если проверки потребовали изменений:
 
 ```bash
-git add package.json tests/yandex-metrika.test.mjs src/app/layout.tsx src/components/analytics/yandex-metrika.ts src/components/analytics/YandexMetrikaNavigation.tsx src/components/analytics/YandexMetrika.tsx
+git add package.json tests/yandex-metrika.test.mjs tests/yandex-metrika.integration.mjs src/app/layout.tsx src/components/analytics/yandex-metrika.ts src/components/analytics/YandexMetrikaNavigation.tsx src/components/analytics/YandexMetrika.tsx
 git commit -m "fix: harden Yandex Metrika integration"
 ```
 
