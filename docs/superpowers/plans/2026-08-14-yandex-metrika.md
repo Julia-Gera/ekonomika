@@ -44,7 +44,7 @@
 В `package.json` добавить в `scripts`:
 
 ```json
-"test": "node --experimental-strip-types --test tests/*.test.mjs"
+"test": "node --no-warnings --experimental-strip-types --test tests/*.test.mjs"
 ```
 
 - [ ] **Step 2: Написать падающие unit-тесты**
