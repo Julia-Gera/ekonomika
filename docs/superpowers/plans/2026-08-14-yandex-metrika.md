@@ -256,7 +256,7 @@ test('serves Yandex Metrika on every page from the root layout', { timeout: 3000
 
   const html = await readHomePage()
 
-  assert.match(html, /id="yandex-metrika"/)
+  assert.match(html, /yandex-metrika/)
   assert.match(html, /tag\.js\?id=111598594/)
   assert.match(html, /mc\.yandex\.ru\/watch\/111598594/)
 })

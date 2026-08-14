@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer'
 import ConsultationModal from '@/components/layout/ConsultationModal'
 import { ConsultationProvider } from '@/lib/consultation-context'
 import { getSiteUrl } from '@/lib/site'
+import YandexMetrika from '@/components/analytics/YandexMetrika'
 
 const cygre = localFont({
   src: [
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru">
       <body className={cygre.className}>
+        <YandexMetrika />
         <ConsultationProvider>
           <Header />
           <main>{children}</main>
